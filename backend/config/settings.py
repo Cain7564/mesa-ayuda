@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'inventory',
     'tickets',
     'dashboard',
-    'notificacions',
+    'notifications',
 ]
 
 MIDDLEWARE = [
