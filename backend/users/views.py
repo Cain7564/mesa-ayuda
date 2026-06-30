@@ -27,6 +27,14 @@ class UsuarioListCreateView(generics.ListCreateAPIView):
         'rol',
     ]
 
+    def get_queryset(self):
+
+        print("Usuario autenticado:", self.request.user)
+
+        return Usuario.objects.all()
+
+    
+
 class UsuarioDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Usuario.objects.all()
