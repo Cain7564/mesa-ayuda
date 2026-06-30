@@ -31,7 +31,7 @@ class UsuarioListCreateView(generics.ListCreateAPIView):
 
         print("Usuario autenticado:", self.request.user)
 
-        return Usuario.objects.all()
+        return Usuario.objects.all().order_by('id')
 
     
 
