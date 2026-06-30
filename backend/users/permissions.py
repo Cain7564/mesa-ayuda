@@ -5,4 +5,10 @@ class EsAdministrador(BasePermission):
 
     def has_permission(self, request, view):
 
-        return True
+        if not request.user.is_authenticated:
+            return False
+
+        if request.user.is_superuser:
+            return True
+
+        return False
