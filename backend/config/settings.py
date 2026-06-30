@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     #Librerias
     'rest_framework',
     'corsheaders',
+    'django_filters',
 
     #Aplicaciones del proyecto
     'users',
