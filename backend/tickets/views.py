@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from .models import (
     Categoria,
@@ -14,6 +15,7 @@ from .serializers import (
     TicketSerializer,
     SeguimientoSerializer,
 )
+
 
 
 class CategoriaListCreateView(generics.ListCreateAPIView):
@@ -37,8 +39,28 @@ class SLADetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class TicketListCreateView(generics.ListCreateAPIView):
+
     queryset = Ticket.objects.all()
+
     serializer_class = TicketSerializer
+
+    filter_backends = [
+        DjangoFilterBackend,
+        OrderingFilter,
+    ]
+
+    filterset_fields = [
+        'estado',
+        'prioridad',
+        'categoria',
+        'tecnico',
+    ]
+
+    ordering_fields = [
+        'fecha',
+        'prioridad',
+        'estado',
+    ]
 
 
 class TicketDetailView(generics.RetrieveUpdateDestroyAPIView):
