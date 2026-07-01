@@ -88,3 +88,6 @@ class EquipoListCreateView(generics.ListCreateAPIView):
 class EquipoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Equipo.objects.all()
     serializer_class = EquipoSerializer
+
+
+

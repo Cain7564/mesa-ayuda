@@ -20,4 +20,6 @@ urlpatterns = [
 
     path('api/', include('inventory.urls')),
 
+    path('api/', include('dashboard.urls')),
+
 ]
