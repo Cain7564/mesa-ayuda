@@ -42,3 +42,30 @@ class EquipoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipo
         fields = '__all__'
+
+    def validate_codigo(self, value):
+
+        if len(value.strip()) < 4:
+            raise serializers.ValidationError(
+                "El código debe tener al menos 4 caracteres."
+            )
+
+        return value
+
+    def validate_modelo(self, value):
+
+        if len(value.strip()) < 3:
+            raise serializers.ValidationError(
+                "El modelo debe tener al menos 3 caracteres."
+            )
+
+        return value
+
+    def validate_numero_serie(self, value):
+
+        if len(value.strip()) < 6:
+            raise serializers.ValidationError(
+                "El número de serie debe tener al menos 6 caracteres."
+            )
+
+        return value
