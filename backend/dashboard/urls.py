@@ -1,6 +1,9 @@
 from django.urls import path
 
-from .views import DashboardUsuariosView
+from .views import (
+    DashboardUsuariosView,
+    DashboardTicketsView,
+)
 
 urlpatterns = [
 
@@ -8,5 +11,11 @@ urlpatterns = [
         'dashboard/usuarios/',
         DashboardUsuariosView.as_view(),
         name='dashboard-usuarios'
+    ),
+
+    path(
+        'dashboard/tickets/',
+        DashboardTicketsView.as_view(),
+        name='dashboard-tickets'
     ),
 ]
