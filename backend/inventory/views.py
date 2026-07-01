@@ -1,4 +1,6 @@
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from .models import (
     Marca,
@@ -58,8 +60,29 @@ class EstadoEquipoDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class EquipoListCreateView(generics.ListCreateAPIView):
+
     queryset = Equipo.objects.all()
+
     serializer_class = EquipoSerializer
+
+    filter_backends = [
+        DjangoFilterBackend,
+        OrderingFilter,
+    ]
+
+    filterset_fields = [
+        'tipo',
+        'marca',
+        'estado',
+        'ubicacion',
+        'sistema_operativo',
+    ]
+
+    ordering_fields = [
+        'codigo',
+        'modelo',
+        'tipo',
+    ]
 
 
 class EquipoDetailView(generics.RetrieveUpdateDestroyAPIView):
