@@ -54,7 +54,9 @@
     <Pagination
       :previous="usuarios.previous"
       :next="usuarios.next"
-      :currentPage="1"
+      :currentPage="currentPage"
+      @previous="paginaAnterior"
+      @next="siguientePagina"
     />
 
     <UserModal
@@ -164,7 +166,7 @@ const cargarUsuarios = async () => {
 
   try {
 
-    const response = await getUsers()
+    const response = await getUsers(currentPage.value)
 
     usuarios.value = response
 
@@ -271,6 +273,34 @@ const guardarUsuario = async (datos) => {
         }
 
     }
+
+}
+
+const siguientePagina = async () => {
+
+    if (!usuarios.value.next) {
+
+        return
+
+    }
+
+    currentPage.value++
+
+    await cargarUsuarios()
+
+}
+
+const paginaAnterior = async () => {
+
+    if (!usuarios.value.previous) {
+
+        return
+
+    }
+
+    currentPage.value--
+
+    await cargarUsuarios()
 
 }
 

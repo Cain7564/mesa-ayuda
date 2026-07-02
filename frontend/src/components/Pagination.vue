@@ -1,59 +1,74 @@
 <template>
-
-  <div class="pagination">
-
+  <div
+    v-if="showPagination"
+    class="pagination"
+  >
     <button
+      class="btn"
       @click="$emit('previous')"
       :disabled="!previous"
     >
       ⬅ Anterior
     </button>
 
-    <span>
+    <span class="page">
 
       Página {{ currentPage }}
 
     </span>
 
     <button
+      class="btn"
       @click="$emit('next')"
       :disabled="!next"
     >
       Siguiente ➡
-
     </button>
-
   </div>
-
 </template>
 
 <script setup>
 
-defineProps({
+import { computed } from 'vue'
 
-    previous: String,
+const props = defineProps({
 
-    next: String,
+  previous: {
+    type: String,
+    default: null
+  },
 
-    currentPage: Number
+  next: {
+    type: String,
+    default: null
+  },
+
+  currentPage: {
+    type: Number,
+    default: 1
+  }
 
 })
 
 defineEmits([
 
-    'previous',
+  'previous',
 
-    'next'
+  'next'
 
 ])
+
+const showPagination = computed(() => {
+
+  return props.previous || props.next
+
+})
 
 </script>
 
 <style scoped>
 
 .pagination{
-
-    margin-top:20px;
 
     display:flex;
 
@@ -63,11 +78,11 @@ defineEmits([
 
     gap:20px;
 
+    margin-top:25px;
+
 }
 
-button{
-
-    padding:10px 20px;
+.btn{
 
     background:#1976d2;
 
@@ -75,17 +90,35 @@ button{
 
     border:none;
 
+    padding:10px 18px;
+
     border-radius:6px;
 
     cursor:pointer;
 
+    transition:.2s;
+
 }
 
-button:disabled{
+.btn:hover:not(:disabled){
+
+    background:#1565c0;
+
+}
+
+.btn:disabled{
 
     background:#bdbdbd;
 
     cursor:not-allowed;
+
+}
+
+.page{
+
+    font-weight:bold;
+
+    color:#444;
 
 }
 
