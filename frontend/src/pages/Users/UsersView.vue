@@ -1,79 +1,79 @@
 <template>
+  <div class="users-page">
 
-  <div>
+    <div class="header">
 
-    <h1>Usuarios</h1>
+      <h1>Usuarios</h1>
 
-    <button @click="cargarUsuarios">
+      <button @click="cargarUsuarios">
 
-      Actualizar
+        Actualizar
 
-    </button>
+      </button>
 
-    <table>
+    </div>
 
-      <thead>
-
-        <tr>
-
-          <th>ID</th>
-
-          <th>Nombre</th>
-
-          <th>Correo</th>
-
-          <th>Rol</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        <tr
-          v-for="usuario in usuarios.results"
-          :key="usuario.id"
-        >
-
-          <td>{{ usuario.id }}</td>
-
-          <td>{{ usuario.nombre }}</td>
-
-          <td>{{ usuario.correo }}</td>
-
-          <td>{{ usuario.rol }}</td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
+    <DataTable
+      :columns="columns"
+      :rows="usuarios.results"
+    />
 
   </div>
-
 </template>
 
 <script setup>
 
 import { ref, onMounted } from 'vue'
 
+import DataTable from '../../components/DataTable.vue'
+
 import { getUsers } from '../../services/users'
 
 const usuarios = ref({
-
-    results: []
-
+  results: []
 })
+
+const columns = [
+
+  {
+    key: 'id',
+    label: 'ID'
+  },
+
+  {
+    key: 'nombre',
+    label: 'Nombre'
+  },
+
+  {
+    key: 'correo',
+    label: 'Correo'
+  },
+
+  {
+    key: 'rol',
+    label: 'Rol'
+  }
+
+]
 
 const cargarUsuarios = async () => {
 
+  try {
+
     usuarios.value = await getUsers()
+
+  } catch (error) {
+
+    console.error(error)
+
+  }
 
 }
 
 onMounted(() => {
 
-    cargarUsuarios()
+  cargarUsuarios()
 
 })
 
@@ -81,39 +81,43 @@ onMounted(() => {
 
 <style scoped>
 
-table{
+.users-page{
 
-    width:100%;
-
-    border-collapse:collapse;
-
-    margin-top:20px;
+    padding:20px;
 
 }
 
-th{
+.header{
 
-    background:#1976d2;
+    display:flex;
 
-    color:white;
+    justify-content:space-between;
 
-    padding:10px;
+    align-items:center;
 
-}
-
-td{
-
-    padding:10px;
-
-    border-bottom:1px solid #ddd;
+    margin-bottom:20px;
 
 }
 
 button{
 
+    background:#1976d2;
+
+    color:white;
+
+    border:none;
+
     padding:10px 20px;
 
-    margin-top:20px;
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#1565c0;
 
 }
 
