@@ -1,5 +1,4 @@
 <template>
-
   <div class="layout">
 
     <aside class="sidebar">
@@ -8,17 +7,41 @@
 
       <ul>
 
-        <li>Dashboard</li>
+        <li>
+          <RouterLink to="/dashboard">
+            Dashboard
+          </RouterLink>
+        </li>
 
-        <li>Usuarios</li>
+        <li>
+          <RouterLink to="/users">
+            Usuarios
+          </RouterLink>
+        </li>
 
-        <li>Tickets</li>
+        <li>
+          <RouterLink to="/tickets">
+            Tickets
+          </RouterLink>
+        </li>
 
-        <li>Inventario</li>
+        <li>
+          <RouterLink to="/inventory">
+            Inventario
+          </RouterLink>
+        </li>
 
-        <li>Reportes</li>
+        <li>
+          <RouterLink to="/reports">
+            Reportes
+          </RouterLink>
+        </li>
 
-        <li>Cerrar sesión</li>
+        <li>
+          <RouterLink to="/login">
+            Cerrar sesión
+          </RouterLink>
+        </li>
 
       </ul>
 
@@ -31,74 +54,95 @@
     </main>
 
   </div>
-
 </template>
 
 <script setup>
 
-import { RouterView } from 'vue-router'
+import { RouterView, RouterLink } from 'vue-router'
 
 </script>
 
 <style scoped>
 
-.layout{
+.layout {
 
-    display:flex;
+    display: flex;
 
-    height:100vh;
-
-}
-
-.sidebar{
-
-    width:250px;
-
-    background:#1f2937;
-
-    color:white;
-
-    padding:20px;
+    height: 100vh;
 
 }
 
-.sidebar h2{
+.sidebar {
 
-    text-align:center;
+    width: 250px;
 
-    margin-bottom:30px;
+    background: #1f2937;
 
-}
+    color: white;
 
-.sidebar ul{
-
-    list-style:none;
-
-    padding:0;
+    padding: 20px;
 
 }
 
-.sidebar li{
+.sidebar h2 {
 
-    padding:15px;
+    text-align: center;
 
-    cursor:pointer;
-
-}
-
-.sidebar li:hover{
-
-    background:#374151;
+    margin-bottom: 30px;
 
 }
 
-.content{
+.sidebar ul {
 
-    flex:1;
+    list-style: none;
 
-    padding:30px;
+    padding: 0;
 
-    background:#f4f6f9;
+}
+
+.sidebar li {
+
+    margin-bottom: 10px;
+
+}
+
+.sidebar a {
+
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 15px;
+
+    border-radius: 6px;
+
+    transition: background 0.3s;
+
+}
+
+.sidebar a:hover {
+
+    background: #374151;
+
+}
+
+.router-link-active {
+
+    background: #2563eb;
+
+    font-weight: bold;
+
+}
+
+.content {
+
+    flex: 1;
+
+    padding: 30px;
+
+    background: #f4f6f9;
 
 }
 
