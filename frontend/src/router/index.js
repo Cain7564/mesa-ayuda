@@ -4,7 +4,7 @@ import LoginView from '../pages/Login/LoginView.vue'
 import DashboardView from '../pages/Dashboard/DashboardView.vue'
 import UsersView from '../pages/Users/UsersView.vue'
 import TicketsView from '../pages/Tickets/TicketsView.vue'
-import InventoryView from '../pages/Inventory/InventoryView.vue'
+import InventoryView from '../pages/Inventory/Inventoryview.vue'
 import ReportsView from '../pages/Reports/ReportsView.vue'
 
 import MainLayout from '../layouts/MainLayout.vue'

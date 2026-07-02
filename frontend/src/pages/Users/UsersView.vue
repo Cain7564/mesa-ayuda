@@ -1,148 +1,119 @@
 <template>
-  <div class="layout">
 
-    <aside class="sidebar">
+  <div>
 
-      <h2>Mesa de Ayuda</h2>
+    <h1>Usuarios</h1>
 
-      <ul>
+    <button @click="cargarUsuarios">
 
-        <li>
-          <RouterLink to="/dashboard">
-            Dashboard
-          </RouterLink>
-        </li>
+      Actualizar
 
-        <li>
-          <RouterLink to="/users">
-            Usuarios
-          </RouterLink>
-        </li>
+    </button>
 
-        <li>
-          <RouterLink to="/tickets">
-            Tickets
-          </RouterLink>
-        </li>
+    <table>
 
-        <li>
-          <RouterLink to="/inventory">
-            Inventario
-          </RouterLink>
-        </li>
+      <thead>
 
-        <li>
-          <RouterLink to="/reports">
-            Reportes
-          </RouterLink>
-        </li>
+        <tr>
 
-        <li>
-          <RouterLink to="/login">
-            Cerrar sesión
-          </RouterLink>
-        </li>
+          <th>ID</th>
 
-      </ul>
+          <th>Nombre</th>
 
-    </aside>
+          <th>Correo</th>
 
-    <main class="content">
+          <th>Rol</th>
 
-      <RouterView />
+        </tr>
 
-    </main>
+      </thead>
+
+      <tbody>
+
+        <tr
+          v-for="usuario in usuarios.results"
+          :key="usuario.id"
+        >
+
+          <td>{{ usuario.id }}</td>
+
+          <td>{{ usuario.nombre }}</td>
+
+          <td>{{ usuario.correo }}</td>
+
+          <td>{{ usuario.rol }}</td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
 
   </div>
+
 </template>
 
 <script setup>
 
-import { RouterView, RouterLink } from 'vue-router'
+import { ref, onMounted } from 'vue'
+
+import { getUsers } from '../../services/users'
+
+const usuarios = ref({
+
+    results: []
+
+})
+
+const cargarUsuarios = async () => {
+
+    usuarios.value = await getUsers()
+
+}
+
+onMounted(() => {
+
+    cargarUsuarios()
+
+})
 
 </script>
 
 <style scoped>
 
-.layout {
+table{
 
-    display: flex;
+    width:100%;
 
-    height: 100vh;
+    border-collapse:collapse;
 
-}
-
-.sidebar {
-
-    width: 250px;
-
-    background: #1f2937;
-
-    color: white;
-
-    padding: 20px;
+    margin-top:20px;
 
 }
 
-.sidebar h2 {
+th{
 
-    text-align: center;
+    background:#1976d2;
 
-    margin-bottom: 30px;
+    color:white;
 
-}
-
-.sidebar ul {
-
-    list-style: none;
-
-    padding: 0;
+    padding:10px;
 
 }
 
-.sidebar li {
+td{
 
-    margin-bottom: 10px;
+    padding:10px;
 
-}
-
-.sidebar a {
-
-    display: block;
-
-    color: white;
-
-    text-decoration: none;
-
-    padding: 15px;
-
-    border-radius: 6px;
-
-    transition: background 0.3s;
+    border-bottom:1px solid #ddd;
 
 }
 
-.sidebar a:hover {
+button{
 
-    background: #374151;
+    padding:10px 20px;
 
-}
-
-.router-link-active {
-
-    background: #2563eb;
-
-    font-weight: bold;
-
-}
-
-.content {
-
-    flex: 1;
-
-    padding: 30px;
-
-    background: #f4f6f9;
+    margin-top:20px;
 
 }
 
