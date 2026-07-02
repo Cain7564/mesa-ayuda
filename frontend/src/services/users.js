@@ -12,13 +12,19 @@ const getAuthHeaders = () => {
 
 }
 
-export const getUsers = async () => {
+export const getUsers = async (page = 1) => {
 
-    const response = await api.get('users/', {
+    const response = await api.get(
 
-        headers: getAuthHeaders()
+        `users/?page=${page}`,
 
-    })
+        {
+
+            headers: getAuthHeaders()
+
+        }
+
+    )
 
     return response.data
 
