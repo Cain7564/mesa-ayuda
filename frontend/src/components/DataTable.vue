@@ -15,6 +15,12 @@
 
         </th>
 
+        <th v-if="showActions">
+
+          Acciones
+
+        </th>
+
       </tr>
 
     </thead>
@@ -35,6 +41,15 @@
 
         </td>
 
+        <td v-if="showActions">
+
+          <slot
+            name="actions"
+            :row="row"
+          />
+
+        </td>
+
       </tr>
 
     </tbody>
@@ -49,7 +64,15 @@ defineProps({
 
   columns: Array,
 
-  rows: Array
+  rows: Array,
+
+  showActions:{
+
+    type:Boolean,
+
+    default:false
+
+  }
 
 })
 

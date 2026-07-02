@@ -12,7 +12,7 @@
         />
 
         <PrimaryButton
-          @click="modalVisible = true"
+          @click="abrirNuevoUsuario"
         >
           Nuevo Usuario
         </PrimaryButton>
@@ -24,13 +24,46 @@
     <DataTable
       :columns="columns"
       :rows="usuariosFiltrados"
-    />
+      :showActions="true"
+    >
+
+      <template #actions="{ row }">
+
+        <div class="buttons">
+
+          <PrimaryButton
+            @click="editarUsuario(row)"
+          >
+            Editar
+          </PrimaryButton>
+
+          <button
+            class="delete-button"
+            @click="eliminarUsuario(row.id)"
+          >
+            Eliminar
+          </button>
+
+        </div>
+
+      </template>
+
+    </DataTable>
 
     <UserModal
+
       :visible="modalVisible"
-      title="Nuevo Usuario"
-      @cerrar="modalVisible = false"
-      @guardar="guardarUsuario"
+
+      :title="modalTitle"
+
+      :buttonText="buttonText"
+
+      :user="usuarioSeleccionado"
+
+      @close="cerrarModal"
+
+      @save="guardarUsuario"
+
     />
 
   </div>
@@ -41,44 +74,60 @@
 import { ref, computed, onMounted } from 'vue'
 
 import PageHeader from '../../components/PageHeader.vue'
-import PrimaryButton from '../../components/PrimaryButton.vue'
 import InputField from '../../components/InputField.vue'
+import PrimaryButton from '../../components/PrimaryButton.vue'
 import DataTable from '../../components/DataTable.vue'
-import UserModal from '../../components/UserModal.vue'
+
+import UserModal from './components/UserModal.vue'
 
 import {
+
   getUsers,
-  createUser
+
+  createUser,
+
+  updateUser,
+
+  deleteUser
+
 } from '../../services/users'
 
 const usuarios = ref({
+
   results: []
+
 })
+
+const busqueda = ref('')
 
 const modalVisible = ref(false)
 
-const busqueda = ref('')
+const modalTitle = ref('Nuevo Usuario')
+
+const buttonText = ref('Guardar')
+
+const usuarioSeleccionado = ref(null)
 
 const columns = [
 
   {
-    key: 'id',
-    label: 'ID'
+    key:'id',
+    label:'ID'
   },
 
   {
-    key: 'nombre',
-    label: 'Nombre'
+    key:'nombre',
+    label:'Nombre'
   },
 
   {
-    key: 'correo',
-    label: 'Correo'
+    key:'correo',
+    label:'Correo'
   },
 
   {
-    key: 'rol',
-    label: 'Rol'
+    key:'rol',
+    label:'Rol'
   }
 
 ]
@@ -97,11 +146,69 @@ const usuariosFiltrados = computed(() => {
 
 const cargarUsuarios = async () => {
 
-  try {
+  usuarios.value = await getUsers()
 
-    usuarios.value = await getUsers()
+}
 
-  } catch (error) {
+const abrirNuevoUsuario = () => {
+
+  usuarioSeleccionado.value = null
+
+  modalTitle.value = 'Nuevo Usuario'
+
+  buttonText.value = 'Guardar'
+
+  modalVisible.value = true
+
+}
+
+const editarUsuario = (usuario) => {
+
+  usuarioSeleccionado.value = usuario
+
+  modalTitle.value = 'Editar Usuario'
+
+  buttonText.value = 'Actualizar'
+
+  modalVisible.value = true
+
+}
+
+const cerrarModal = () => {
+
+  modalVisible.value = false
+
+}
+
+const guardarUsuario = async (datos) => {
+
+  try{
+
+    if(usuarioSeleccionado.value){
+
+      await updateUser(
+
+        usuarioSeleccionado.value.id,
+
+        datos
+
+      )
+
+    }
+
+    else{
+
+      await createUser(datos)
+
+    }
+
+    cerrarModal()
+
+    await cargarUsuarios()
+
+  }
+
+  catch(error){
 
     console.error(error)
 
@@ -109,21 +216,33 @@ const cargarUsuarios = async () => {
 
 }
 
-const guardarUsuario = async (datos) => {
+const eliminarUsuario = async (id) => {
 
-  try {
+  if(
 
-    await createUser(datos)
+    !confirm(
 
-    modalVisible.value = false
+      '¿Desea eliminar este usuario?'
+
+    )
+
+  ){
+
+    return
+
+  }
+
+  try{
+
+    await deleteUser(id)
 
     await cargarUsuarios()
 
-  } catch (error) {
+  }
+
+  catch(error){
 
     console.error(error)
-
-    alert('No se pudo crear el usuario.')
 
   }
 
@@ -152,6 +271,36 @@ onMounted(() => {
     gap:20px;
 
     align-items:end;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.delete-button{
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.delete-button:hover{
+
+    background:#bb2d3b;
 
 }
 
