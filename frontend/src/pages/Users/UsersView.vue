@@ -1,21 +1,36 @@
 <template>
   <div class="users-page">
 
-    <div class="header">
+    <PageHeader title="Usuarios">
 
-      <h1>Usuarios</h1>
+      <div class="actions">
 
-      <button @click="cargarUsuarios">
+        <InputField
+          v-model="busqueda"
+          label="Buscar"
+          placeholder="Buscar usuario..."
+        />
 
-        Actualizar
+        <PrimaryButton
+          @click="modalVisible = true"
+        >
+          Nuevo Usuario
+        </PrimaryButton>
 
-      </button>
+      </div>
 
-    </div>
+    </PageHeader>
 
     <DataTable
       :columns="columns"
-      :rows="usuarios.results"
+      :rows="usuariosFiltrados"
+    />
+
+    <UserModal
+      :visible="modalVisible"
+      title="Nuevo Usuario"
+      @cerrar="modalVisible = false"
+      @guardar="guardarUsuario"
     />
 
   </div>
@@ -23,15 +38,26 @@
 
 <script setup>
 
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
+import PageHeader from '../../components/PageHeader.vue'
+import PrimaryButton from '../../components/PrimaryButton.vue'
+import InputField from '../../components/InputField.vue'
 import DataTable from '../../components/DataTable.vue'
+import UserModal from '../../components/UserModal.vue'
 
-import { getUsers } from '../../services/users'
+import {
+  getUsers,
+  createUser
+} from '../../services/users'
 
 const usuarios = ref({
   results: []
 })
+
+const modalVisible = ref(false)
+
+const busqueda = ref('')
 
 const columns = [
 
@@ -57,6 +83,18 @@ const columns = [
 
 ]
 
+const usuariosFiltrados = computed(() => {
+
+  return usuarios.value.results.filter(usuario =>
+
+    usuario.nombre
+      .toLowerCase()
+      .includes(busqueda.value.toLowerCase())
+
+  )
+
+})
+
 const cargarUsuarios = async () => {
 
   try {
@@ -66,6 +104,26 @@ const cargarUsuarios = async () => {
   } catch (error) {
 
     console.error(error)
+
+  }
+
+}
+
+const guardarUsuario = async (datos) => {
+
+  try {
+
+    await createUser(datos)
+
+    modalVisible.value = false
+
+    await cargarUsuarios()
+
+  } catch (error) {
+
+    console.error(error)
+
+    alert('No se pudo crear el usuario.')
 
   }
 
@@ -87,37 +145,13 @@ onMounted(() => {
 
 }
 
-.header{
+.actions{
 
     display:flex;
 
-    justify-content:space-between;
+    gap:20px;
 
-    align-items:center;
-
-    margin-bottom:20px;
-
-}
-
-button{
-
-    background:#1976d2;
-
-    color:white;
-
-    border:none;
-
-    padding:10px 20px;
-
-    border-radius:5px;
-
-    cursor:pointer;
-
-}
-
-button:hover{
-
-    background:#1565c0;
+    align-items:end;
 
 }
 
