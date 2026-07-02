@@ -1,10 +1,10 @@
 <template>
 
-  <div class="dashboard">
+  <div>
 
     <h1>Dashboard</h1>
 
-    <h2>Bienvenido al Sistema Mesa de Ayuda</h2>
+    <p>Cargando información...</p>
 
   </div>
 
@@ -16,9 +16,9 @@
 
 <style scoped>
 
-.dashboard{
+h1{
 
-    padding:40px;
+    margin-bottom:20px;
 
 }
 
