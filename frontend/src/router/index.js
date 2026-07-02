@@ -13,20 +13,24 @@ const routes = [
   },
 
   {
-    path:'/',
-    redirect:'/login'
-  },
+    path: '/',
+    component: MainLayout,
 
-  {
-    path:'/login',
-    name:'login',
-    component:LoginView
-  },
+    children: [
 
-  {
-    path:'/dashboard',
-    name:'dashboard',
-    component:DashboardView
+      {
+        path: '',
+        redirect: '/dashboard'
+      },
+
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: DashboardView
+      }
+
+    ]
+
   }
 
 ]
