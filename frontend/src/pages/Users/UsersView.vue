@@ -182,35 +182,54 @@ const cerrarModal = () => {
 
 const guardarUsuario = async (datos) => {
 
-  try{
+  console.log("===== DATOS ENVIADOS =====")
+  console.log(datos)
 
-    if(usuarioSeleccionado.value){
+  try {
+
+    if (usuarioSeleccionado.value) {
 
       await updateUser(
-
         usuarioSeleccionado.value.id,
-
         datos
-
       )
 
-    }
+      alert("Usuario actualizado correctamente.")
 
-    else{
+    } else {
 
       await createUser(datos)
 
+      alert("Usuario creado correctamente.")
+
     }
 
-    cerrarModal()
+    modalVisible.value = false
 
     await cargarUsuarios()
 
-  }
+  } catch (error) {
 
-  catch(error){
+    console.log("===== ERROR COMPLETO =====")
+    console.log(error)
 
-    console.error(error)
+    if (error.response) {
+
+      console.log("===== STATUS =====")
+      console.log(error.response.status)
+
+      console.log("===== DATA =====")
+      console.log(error.response.data)
+
+      alert("Error: " + JSON.stringify(error.response.data))
+
+    } else {
+
+      console.log("No hubo respuesta del servidor.")
+
+      alert("No se pudo conectar con el servidor Django.")
+
+    }
 
   }
 

@@ -1,4 +1,6 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+
 from .models import Usuario
 
 
@@ -15,7 +17,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     def validate_nombre(self, value):
 
-        if len(value) < 3:
+        if len(value.strip()) < 3:
             raise serializers.ValidationError(
                 "El nombre debe tener al menos 3 caracteres."
             )
@@ -30,3 +32,21 @@ class UsuarioSerializer(serializers.ModelSerializer):
             )
 
         return value
+
+    def create(self, validated_data):
+
+        validated_data['password'] = make_password(
+            validated_data['password']
+        )
+
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+
+        if 'password' in validated_data:
+
+            validated_data['password'] = make_password(
+                validated_data['password']
+            )
+
+        return super().update(instance, validated_data)
