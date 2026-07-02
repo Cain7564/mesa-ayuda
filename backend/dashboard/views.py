@@ -16,7 +16,9 @@ class DashboardUsuariosView(APIView):
 
         return Response({
             "usuarios": total_usuarios,
-            "tecnicos": total_tecnicos,
+            "tecnicos": Usuario.objects.filter(
+                rol="TECNICO"
+            ).count(),
         })
 class DashboardTicketsView(APIView):
 
@@ -90,7 +92,10 @@ class DashboardGeneralView(APIView):
 
             # Usuarios
             "usuarios": Usuario.objects.count(),
-            "tecnicos": Tecnico.objects.count(),
+            "tecnicos": Usuario.objects.filter(
+                rol="TECNICO"
+            ).count(),
+            
 
             # Tickets
             "tickets_total": Ticket.objects.count(),
