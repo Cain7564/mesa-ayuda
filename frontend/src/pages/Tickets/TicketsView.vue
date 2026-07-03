@@ -162,40 +162,45 @@ const estadoSeleccionado = ref('')
 
 const columns = [
 
-    {
-        key:'id',
-        label:'ID'
-    },
+  {
+    key: 'id',
+    label: 'ID'
+  },
 
-    {
-        key:'asunto',
-        label:'Asunto'
-    },
+  {
+    key: 'asunto',
+    label: 'Asunto'
+  },
 
-    {
-        key:'usuario_nombre',
-        label:'Usuario'
-    },
+  {
+    key: 'usuario_nombre',
+    label: 'Usuario'
+  },
 
-    {
-        key:'tecnico_nombre',
-        label:'Técnico'
-    },
+  {
+    key: 'tecnico_nombre',
+    label: 'Técnico'
+  },
 
-    {
-        key:'estado',
-        label:'Estado'
-    },
+  {
+    key: 'categoria_nombre',
+    label: 'Categoría'
+  },
 
-    {
-        key:'prioridad',
-        label:'Prioridad'
-    },
+  {
+    key: 'estado',
+    label: 'Estado'
+  },
 
-    {
-        key:'fecha',
-        label:'Fecha'
-    }
+  {
+    key: 'prioridad',
+    label: 'Prioridad'
+  },
+
+  {
+    key: 'fecha',
+    label: 'Fecha'
+  }
 
 ]
 

@@ -37,7 +37,51 @@
           :key="column.key"
         >
 
-          {{ row[column.key] }}
+          <!-- Estado -->
+
+          <template v-if="column.key === 'estado'">
+
+            <span
+              class="badge"
+              :class="estadoClass(row.estado)"
+            >
+
+              {{ row.estado }}
+
+            </span>
+
+          </template>
+
+          <!-- Prioridad -->
+
+          <template v-else-if="column.key === 'prioridad'">
+
+            <span
+              class="badge"
+              :class="prioridadClass(row.prioridad)"
+            >
+
+              {{ row.prioridad }}
+
+            </span>
+
+          </template>
+
+          <!-- Fecha -->
+
+          <template v-else-if="column.key === 'fecha'">
+
+            {{ formatearFecha(row.fecha) }}
+
+          </template>
+
+          <!-- Valor normal -->
+
+          <template v-else>
+
+            {{ row[column.key] }}
+
+          </template>
 
         </td>
 
@@ -76,6 +120,66 @@ defineProps({
 
 })
 
+const prioridadClass = (prioridad) => {
+
+  switch(prioridad){
+
+    case 'Alta':
+
+      return 'danger'
+
+    case 'Media':
+
+      return 'warning'
+
+    case 'Baja':
+
+      return 'success'
+
+    default:
+
+      return ''
+
+  }
+
+}
+
+const estadoClass = (estado) => {
+
+  switch(estado){
+
+    case 'Abierto':
+
+      return 'success'
+
+    case 'En proceso':
+
+      return 'warning'
+
+    case 'Cerrado':
+
+      return 'secondary'
+
+    default:
+
+      return ''
+
+  }
+
+}
+
+const formatearFecha = (fecha) => {
+
+  if(!fecha){
+
+    return ''
+
+  }
+
+  return new Date(fecha).toLocaleString()
+
+}
+
 </script>
 
 <style scoped>
@@ -86,6 +190,14 @@ defineProps({
 
     border-collapse:collapse;
 
+    background:white;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
 }
 
 th{
@@ -94,15 +206,63 @@ th{
 
     color:white;
 
-    padding:12px;
+    padding:14px;
+
+    text-align:left;
 
 }
 
 td{
 
-    padding:12px;
+    padding:14px;
 
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid #eee;
+
+}
+
+tr:hover{
+
+    background:#f8f9fa;
+
+}
+
+.badge{
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.success{
+
+    background:#28a745;
+
+}
+
+.warning{
+
+    background:#ffc107;
+
+    color:#333;
+
+}
+
+.danger{
+
+    background:#dc3545;
+
+}
+
+.secondary{
+
+    background:#6c757d;
 
 }
 

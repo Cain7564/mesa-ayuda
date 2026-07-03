@@ -24,9 +24,42 @@ class SLASerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
 
+    usuario_nombre = serializers.CharField(
+        source='usuario.nombre',
+        read_only=True
+    )
+
+    tecnico_nombre = serializers.CharField(
+        source='tecnico.nombre',
+        read_only=True
+    )
+
+    categoria_nombre = serializers.CharField(
+        source='categoria.nombre',
+        read_only=True
+    )
+
     class Meta:
         model = Ticket
-        fields = '__all__'
+        fields = [
+            'id',
+            'fecha',
+            'asunto',
+            'descripcion',
+            'prioridad',
+            'estado',
+
+            'usuario',
+            'usuario_nombre',
+
+            'tecnico',
+            'tecnico_nombre',
+
+            'categoria',
+            'categoria_nombre',
+
+            'fecha_cierre',
+        ]
 
     def validate_asunto(self, value):
 
@@ -75,8 +108,6 @@ class TicketSerializer(serializers.ModelSerializer):
             )
 
         return value
-
-
 class SeguimientoSerializer(serializers.ModelSerializer):
 
     class Meta:
