@@ -1,7 +1,8 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 
+    
 from .models import (
     Categoria,
     SLA,
@@ -47,6 +48,7 @@ class TicketListCreateView(generics.ListCreateAPIView):
     filter_backends = [
         DjangoFilterBackend,
         OrderingFilter,
+        SearchFilter,   
     ]
 
     filterset_fields = [
@@ -54,6 +56,11 @@ class TicketListCreateView(generics.ListCreateAPIView):
         'prioridad',
         'categoria',
         'tecnico',
+    ]
+
+    search_fields = [
+        'asunto',   
+        'descripcion',
     ]
 
     ordering_fields = [

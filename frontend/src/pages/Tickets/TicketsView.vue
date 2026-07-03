@@ -41,6 +41,68 @@
 
         </div>
 
+        <div class="filter">
+
+          <label>Prioridad</label>
+
+          <select
+            v-model="prioridadSeleccionada"
+            @change="cargarTickets"
+          >
+
+            <option value="">
+              Todas
+            </option>
+
+            <option value="Baja">
+              Baja
+            </option>
+
+            <option value="Media">
+              Media
+            </option>
+
+            <option value="Alta">
+              Alta
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="filter">
+
+          <label>Ordenar</label>
+
+          <select
+            v-model="ordenSeleccionado"
+            @change="cargarTickets"
+          >
+
+            <option value="">
+              Sin ordenar
+            </option>
+
+            <option value="fecha">
+              Fecha ↑
+            </option>
+
+            <option value="-fecha">
+              Fecha ↓
+            </option>
+
+            <option value="prioridad">
+              Prioridad
+            </option>
+
+            <option value="estado">
+              Estado
+            </option>
+
+          </select>
+
+        </div>
+
         <PrimaryButton
           @click="abrirNuevoTicket"
         >
@@ -106,8 +168,18 @@ const columns = [
     },
 
     {
-        key:'titulo',
-        label:'Título'
+        key:'asunto',
+        label:'Asunto'
+    },
+
+    {
+        key:'usuario_nombre',
+        label:'Usuario'
+    },
+
+    {
+        key:'tecnico_nombre',
+        label:'Técnico'
     },
 
     {
@@ -118,6 +190,11 @@ const columns = [
     {
         key:'prioridad',
         label:'Prioridad'
+    },
+
+    {
+        key:'fecha',
+        label:'Fecha'
     }
 
 ]
