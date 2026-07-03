@@ -391,9 +391,33 @@ onMounted(() => {
 
     display:flex;
 
+    align-items:flex-end;
+
     gap:20px;
 
-    align-items:end;
+    flex-wrap:wrap;
+
+}
+
+.filter{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.filter select{
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    min-width:170px;
+
+    font-size:14px;
 
 }
 
@@ -418,6 +442,8 @@ onMounted(() => {
     border-radius:6px;
 
     cursor:pointer;
+
+    transition:.2s;
 
 }
 
