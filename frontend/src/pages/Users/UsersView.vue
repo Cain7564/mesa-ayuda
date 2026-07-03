@@ -2,66 +2,97 @@
 
   <div class="users-page">
 
-<PageHeader title="Usuarios">
+    <PageHeader title="Usuarios">
 
-  <div class="actions">
+      <div class="actions">
 
-    <InputField
-      v-model="busqueda"
-      label="Buscar"
-      placeholder="Buscar usuario..."
-    />
+        <InputField
+          v-model="busqueda"
+          label="Buscar"
+          placeholder="Buscar usuario..."
+        />
 
-    <div class="filter">
+        <!-- FILTRO POR ROL -->
+        <div class="filter">
 
-      <label>Rol</label>
+          <label>Rol</label>
 
-      <select
-        v-model="rolSeleccionado"
-        @change="cargarUsuarios"
-      >
+          <select
+            v-model="rolSeleccionado"
+            @change="cargarUsuarios"
+          >
 
-        <option value="">
+            <option value="">
+              Todos
+            </option>
 
-          Todos
+            <option value="ADMIN">
+              Administrador
+            </option>
 
-        </option>
+            <option value="TECNICO">
+              Técnico
+            </option>
 
-        <option value="ADMIN">
+            <option value="USUARIO">
+              Usuario
+            </option>
 
-          Administrador
+          </select>
 
-        </option>
+        </div>
 
-        <option value="TECNICO">
+        <!-- NUEVO FILTRO DE ORDENAMIENTO -->
+        <div class="filter">
 
-          Técnico
+          <label>Ordenar</label>
 
-        </option>
+          <select
+            v-model="ordenSeleccionado"
+            @change="cargarUsuarios"
+          >
 
-        <option value="USUARIO">
+            <option value="">
+              Sin ordenar
+            </option>
 
-          Usuario
+            <option value="nombre">
+              Nombre (A-Z)
+            </option>
 
-        </option>
+            <option value="-nombre">
+              Nombre (Z-A)
+            </option>
 
-      </select>
+            <option value="correo">
+              Correo (A-Z)
+            </option>
 
-    </div>
+            <option value="-correo">
+              Correo (Z-A)
+            </option>
 
-    <PrimaryButton
-      @click="abrirNuevoUsuario"
-    >
-      Nuevo Usuario
-    </PrimaryButton>
+            <option value="rol">
+              Rol
+            </option>
 
-  </div>
+          </select>
 
-</PageHeader>
+        </div>
+
+        <PrimaryButton
+          @click="abrirNuevoUsuario"
+        >
+          Nuevo Usuario
+        </PrimaryButton>
+
+      </div>
+
+    </PageHeader>
 
     <DataTable
       :columns="columns"
-      :rows="usuariosFiltrados"
+      :rows="usuarios.results"
       :showActions="true"
     >
 
@@ -97,19 +128,12 @@
     />
 
     <UserModal
-
       :visible="modalVisible"
-
       :title="modalTitle"
-
       :buttonText="buttonText"
-
       :user="usuarioSeleccionado"
-
       @close="cerrarModal"
-
       @save="guardarUsuario"
-
     />
 
   </div>
@@ -155,6 +179,8 @@ const busqueda = ref('')
 
 const rolSeleccionado = ref('')
 
+const ordenSeleccionado = ref('')
+
 const modalVisible = ref(false)
 
 const modalTitle = ref('Nuevo Usuario')
@@ -162,6 +188,7 @@ const modalTitle = ref('Nuevo Usuario')
 const buttonText = ref('Guardar')
 
 const usuarioSeleccionado = ref(null)
+
 const currentPage = ref(1)
 
 const columns = [
@@ -197,7 +224,8 @@ const cargarUsuarios = async () => {
             currentPage.value,
 
             rolSeleccionado.value,
-            busqueda.value
+            busqueda.value,
+            ordenSeleccionado.value
 
         )
 

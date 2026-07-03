@@ -12,16 +12,36 @@ const getAuthHeaders = () => {
 
 }
 
-export const getUsers = async (page = 1, rol = '', search = '') => {
+export const getUsers = async (
+
+    page = 1,
+
+    rol = '',
+
+    search = '',
+
+    ordering = ''
+
+) => {
 
     let url = `users/?page=${page}`
 
     if (rol) {
+
         url += `&rol=${rol}`
+
     }
 
     if (search) {
+
         url += `&search=${search}`
+
+    }
+
+    if (ordering) {
+
+        url += `&ordering=${ordering}`
+
     }
 
     const response = await api.get(url)
