@@ -12,11 +12,19 @@ const getAuthHeaders = () => {
 
 }
 
-export const getUsers = async (page = 1) => {
+export const getUsers = async (page = 1, rol = '') => {
+
+    let url = `users/?page=${page}`
+
+    if (rol) {
+
+        url += `&rol=${rol}`
+
+    }
 
     const response = await api.get(
 
-        `users/?page=${page}`,
+        url,
 
         {
 

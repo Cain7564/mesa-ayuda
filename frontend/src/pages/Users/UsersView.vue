@@ -2,25 +2,62 @@
 
   <div class="users-page">
 
-    <PageHeader title="Usuarios">
+<PageHeader title="Usuarios">
 
-      <div class="actions">
+  <div class="actions">
 
-        <InputField
-          v-model="busqueda"
-          label="Buscar"
-          placeholder="Buscar usuario..."
-        />
+    <InputField
+      v-model="busqueda"
+      label="Buscar"
+      placeholder="Buscar usuario..."
+    />
 
-        <PrimaryButton
-          @click="abrirNuevoUsuario"
-        >
-          Nuevo Usuario
-        </PrimaryButton>
+    <div class="filter">
 
-      </div>
+      <label>Rol</label>
 
-    </PageHeader>
+      <select
+        v-model="rolSeleccionado"
+        @change="cargarUsuarios"
+      >
+
+        <option value="">
+
+          Todos
+
+        </option>
+
+        <option value="ADMIN">
+
+          Administrador
+
+        </option>
+
+        <option value="TECNICO">
+
+          Técnico
+
+        </option>
+
+        <option value="USUARIO">
+
+          Usuario
+
+        </option>
+
+      </select>
+
+    </div>
+
+    <PrimaryButton
+      @click="abrirNuevoUsuario"
+    >
+      Nuevo Usuario
+    </PrimaryButton>
+
+  </div>
+
+</PageHeader>
 
     <DataTable
       :columns="columns"
@@ -117,6 +154,8 @@ const usuarios = ref({
 
 const busqueda = ref('')
 
+const rolSeleccionado = ref('')
+
 const modalVisible = ref(false)
 
 const modalTitle = ref('Nuevo Usuario')
@@ -164,19 +203,23 @@ const usuariosFiltrados = computed(() => {
 
 const cargarUsuarios = async () => {
 
-  try {
+    try {
 
-    const response = await getUsers(currentPage.value)
+        usuarios.value = await getUsers(
 
-    usuarios.value = response
+            currentPage.value,
 
-  }
+            rolSeleccionado.value
 
-  catch(error){
+        )
 
-    console.error(error)
+    }
 
-  }
+    catch(error){
+
+        console.error(error)
+
+    }
 
 }
 
