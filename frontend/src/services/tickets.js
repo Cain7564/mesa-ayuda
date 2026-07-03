@@ -83,3 +83,14 @@ export const deleteTicket = async (id) => {
     )
 
 }
+export const getCategoriasSimple = async () => {
+
+    const response = await api.get(
+
+        'categorias/simple/'
+
+    )
+
+    return response.data
+
+}

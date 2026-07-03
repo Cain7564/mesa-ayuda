@@ -51,10 +51,33 @@
 
       <label>Usuario</label>
 
-      <input
-        type="number"
+      <select
         v-model="form.usuario"
-      />
+      >
+
+        <option
+          value=""
+        >
+
+          Seleccione...
+
+        </option>
+
+        <option
+
+          v-for="usuario in usuarios"
+
+          :key="usuario.id"
+
+          :value="usuario.id"
+
+        >
+
+          {{ usuario.nombre }}
+
+        </option>
+
+      </select>
 
     </div>
 
@@ -62,10 +85,33 @@
 
       <label>Técnico</label>
 
-      <input
-        type="number"
+      <select
         v-model="form.tecnico"
-      />
+      >
+
+        <option
+          value=""
+        >
+
+          Seleccione...
+
+        </option>
+
+        <option
+
+          v-for="tecnico in tecnicos"
+
+          :key="tecnico.id"
+
+          :value="tecnico.id"
+
+        >
+
+          {{ tecnico.nombre }}
+
+        </option>
+
+      </select>
 
     </div>
 
@@ -73,10 +119,33 @@
 
       <label>Categoría</label>
 
-      <input
-        type="number"
+      <select
         v-model="form.categoria"
-      />
+      >
+
+        <option
+          value=""
+        >
+
+          Seleccione...
+
+        </option>
+
+        <option
+
+          v-for="categoria in categorias"
+
+          :key="categoria.id"
+
+          :value="categoria.id"
+
+        >
+
+          {{ categoria.nombre }}
+
+        </option>
+
+      </select>
 
     </div>
 
@@ -100,6 +169,33 @@ import { reactive, watch } from 'vue'
 
 import InputField from '../../../components/InputField.vue'
 import PrimaryButton from '../../../components/PrimaryButton.vue'
+import {
+
+    getUsuariosSimple,
+
+    getTecnicosSimple
+
+} from '../../../services/users'
+
+import {
+
+    getCategoriasSimple
+
+} from '../../../services/tickets'
+
+import {
+
+    onMounted,
+
+    ref
+
+} from 'vue'
+
+const usuarios = ref([])
+
+const tecnicos = ref([])
+
+const categorias = ref([])
 
 const props = defineProps({
 
@@ -188,6 +284,16 @@ const submitForm = () => {
   })
 
 }
+
+onMounted(async () => {
+
+    usuarios.value = await getUsuariosSimple()
+
+    tecnicos.value = await getTecnicosSimple()
+
+    categorias.value = await getCategoriasSimple()
+
+})
 
 </script>
 

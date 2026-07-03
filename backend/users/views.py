@@ -4,11 +4,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.response import Response
 
 
-from .models import Usuario
-from .serializers import UsuarioSerializer
+from .models import Usuario, Tecnico
+from .serializers import UsuarioSerializer, TecnicoSerializer
 from .permissions import EsAdministrador
 
 
@@ -72,12 +71,84 @@ class UsuarioSimpleView(APIView):
 
     def get(self, request):
 
-        usuarios = Usuario.objects.all().values(
-
-            'id',
-
-            'nombre'
-
+        usuarios = Usuario.objects.values(
+            "id",
+            "nombre"
         )
 
-        return Response(usuarios)    
+        return Response(list(usuarios))
+    
+class TecnicoSimpleView(APIView):
+
+    def get(self, request):
+
+        tecnicos = Tecnico.objects.values(
+            "id",
+            "nombre"
+        )
+
+        return Response(list(tecnicos))
+    
+class TecnicoListCreateView(generics.ListCreateAPIView):
+
+    queryset = Tecnico.objects.all()
+
+    serializer_class = TecnicoSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = [
+        SearchFilter,
+        OrderingFilter,
+    ]
+
+    search_fields = [
+        'nombre',
+        'especialidad',
+    ]
+
+    ordering_fields = [
+        'nombre',
+        'especialidad',
+    ]
+
+
+class TecnicoDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Tecnico.objects.all()
+
+    serializer_class = TecnicoSerializer
+
+    permission_classes = [IsAuthenticated]
+
+class TecnicoListCreateView(generics.ListCreateAPIView):
+
+    queryset = Tecnico.objects.all()
+
+    serializer_class = TecnicoSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = [
+        SearchFilter,
+        OrderingFilter,
+    ]
+
+    search_fields = [
+        'nombre',
+        'especialidad',
+    ]
+
+    ordering_fields = [
+        'nombre',
+        'especialidad',
+    ]
+
+
+class TecnicoDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Tecnico.objects.all()
+
+    serializer_class = TecnicoSerializer
+
+    permission_classes = [IsAuthenticated]

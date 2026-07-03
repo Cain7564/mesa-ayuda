@@ -70,5 +70,5 @@ urlpatterns = [
     'categorias/simple/',
     CategoriaSimpleView.as_view(),
     name='categorias-simple'
-),
+    ),
 ]

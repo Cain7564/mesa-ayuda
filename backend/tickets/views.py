@@ -130,10 +130,9 @@ class CategoriaSimpleView(APIView):
 
     def get(self, request):
 
-        categorias = Categoria.objects.all().values(
-
-            'id',
-
-            'nombre'
-
+        categorias = Categoria.objects.values(
+            "id",
+            "nombre"
         )
+
+        return Response(list(categorias))

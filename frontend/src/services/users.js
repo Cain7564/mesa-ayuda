@@ -105,3 +105,27 @@ export const deleteUser = async (id) => {
     )
 
 }
+
+export const getUsuariosSimple = async () => {
+
+    const response = await api.get(
+
+        'users/simple/'
+
+    )
+
+    return response.data
+
+}
+
+export const getTecnicosSimple = async () => {
+
+    const response = await api.get(
+
+        'users/tecnicos/simple/'
+
+    )
+
+    return response.data
+
+}
