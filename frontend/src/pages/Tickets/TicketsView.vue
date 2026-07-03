@@ -284,7 +284,6 @@ const cerrarModal = () => {
     modalVisible.value = false
 
 }
-
 const guardarTicket = async (datos) => {
 
     try {
@@ -371,6 +370,30 @@ onMounted(()=>{
 
 })
 
+
+const eliminarTicket = async (id) => {
+
+    if(!confirm("¿Desea eliminar este ticket?")){
+
+        return
+
+    }
+
+    try{
+
+        await deleteTicket(id)
+
+        await cargarTickets()
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+    }
+
+}
 </script>
 
 <style scoped>
