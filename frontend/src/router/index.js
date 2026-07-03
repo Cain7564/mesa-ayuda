@@ -6,6 +6,7 @@ import UsersView from '../pages/Users/UsersView.vue'
 import TicketsView from '../pages/Tickets/TicketsView.vue'
 import InventoryView from '../pages/Inventory/Inventoryview.vue'
 import ReportsView from '../pages/Reports/ReportsView.vue'
+import TicketsView from '../pages/Tickets/TicketsView.vue'
 
 import MainLayout from '../layouts/MainLayout.vue'
 
@@ -56,7 +57,15 @@ const routes = [
         path: 'reports',
         name: 'reports',
         component: ReportsView
+      },
+
+      {
+        path: 'tickets',
+        name: 'tickets',
+        component: TicketsView
       }
+
+      
 
     ]
 
