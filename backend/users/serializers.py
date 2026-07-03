@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import Usuario
+from .models import Usuario, Tecnico
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -50,3 +50,27 @@ class UsuarioSerializer(serializers.ModelSerializer):
             )
 
         return super().update(instance, validated_data)
+
+class TecnicoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tecnico
+        fields = '__all__'
+
+    def validate_nombre(self, value):
+
+        if len(value.strip()) < 3:
+            raise serializers.ValidationError(
+                "El nombre debe tener al menos 3 caracteres."
+            )
+
+        return value
+
+    def validate_especialidad(self, value):
+
+        if len(value.strip()) < 3:
+            raise serializers.ValidationError(
+                "La especialidad debe tener al menos 3 caracteres."
+            )
+
+        return value
