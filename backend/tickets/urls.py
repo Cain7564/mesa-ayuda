@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     CategoriaListCreateView,
     CategoriaDetailView,
+    CategoriaSimpleView,
     SLAListCreateView,
     SLADetailView,
     TicketListCreateView,
@@ -64,4 +65,10 @@ urlpatterns = [
         SeguimientoDetailView.as_view(),
         name='seguimiento-detail'
     ),
+
+    path(
+    'categorias/simple/',
+    CategoriaSimpleView.as_view(),
+    name='categorias-simple'
+),
 ]

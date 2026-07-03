@@ -114,9 +114,33 @@
     </PageHeader>
 
     <DataTable
-      :columns="columns"
-      :rows="tickets.results"
-    />
+  :columns="columns"
+  :rows="tickets.results"
+  :showActions="true"
+>
+
+  <template #actions="{ row }">
+
+    <div class="buttons">
+
+      <PrimaryButton
+        @click="editarTicket(row)"
+      >
+        Editar
+      </PrimaryButton>
+
+      <button
+        class="delete-button"
+        @click="eliminarTicket(row.id)"
+      >
+        Eliminar
+      </button>
+
+    </div>
+
+  </template>
+
+</DataTable>
 
     <Pagination
       :previous="tickets.previous"
@@ -185,6 +209,10 @@ const busqueda = ref('')
 
 const estadoSeleccionado = ref('')
 
+const prioridadSeleccionada = ref('')
+
+const ordenSeleccionado = ref('')
+
 const columns = [
 
   {
@@ -236,12 +264,10 @@ const cargarTickets = async () => {
         tickets.value = await getTickets(
 
             currentPage.value,
-
             estadoSeleccionado.value,
-
-            '',
-
-            busqueda.value
+            prioridadSeleccionada.value,
+            busqueda.value,
+            ordenSeleccionado.value
 
         )
 
@@ -364,12 +390,27 @@ watch(estadoSeleccionado, async ()=>{
 
 })
 
+watch(prioridadSeleccionada, async ()=>{
+
+    currentPage.value=1
+
+    await cargarTickets()
+
+})
+
+watch(ordenSeleccionado, async ()=>{
+
+    currentPage.value=1
+
+    await cargarTickets()
+
+})
+
 onMounted(()=>{
 
     cargarTickets()
 
 })
-
 
 const eliminarTicket = async (id) => {
 
@@ -431,6 +472,38 @@ const eliminarTicket = async (id) => {
     border:1px solid #ccc;
 
     border-radius:6px;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.delete-button{
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.delete-button:hover{
+
+    background:#bb2d3b;
 
 }
 

@@ -41,6 +41,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
+
         fields = [
             'id',
             'fecha',
@@ -60,8 +61,11 @@ class TicketSerializer(serializers.ModelSerializer):
 
             'fecha_cierre',
         ]
-    read_only_fields = ['fecha', 'usuario', 'fecha_cierre']     
 
+        read_only_fields = [
+            'fecha',
+            'fecha_cierre',
+        ]
     def validate_asunto(self, value):
 
         if len(value.strip()) < 5:

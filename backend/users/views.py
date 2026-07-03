@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 from .models import Usuario
@@ -65,3 +67,17 @@ class UsuarioDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
     permission_classes = [IsAuthenticated]
+
+class UsuarioSimpleView(APIView):
+
+    def get(self, request):
+
+        usuarios = Usuario.objects.all().values(
+
+            'id',
+
+            'nombre'
+
+        )
+
+        return Response(usuarios)    

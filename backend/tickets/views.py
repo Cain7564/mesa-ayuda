@@ -3,6 +3,10 @@ from django.utils import timezone
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
 
 from .models import (
     Categoria,
@@ -121,3 +125,15 @@ class SeguimientoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Seguimiento.objects.all()
 
     serializer_class = SeguimientoSerializer
+
+class CategoriaSimpleView(APIView):
+
+    def get(self, request):
+
+        categorias = Categoria.objects.all().values(
+
+            'id',
+
+            'nombre'
+
+        )
