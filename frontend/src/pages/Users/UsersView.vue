@@ -118,8 +118,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted } from 'vue'
-
+import { ref, computed, onMounted, watch } from 'vue'
 import PageHeader from '../../components/PageHeader.vue'
 import InputField from '../../components/InputField.vue'
 import PrimaryButton from '../../components/PrimaryButton.vue'
@@ -189,18 +188,6 @@ const columns = [
 
 ]
 
-const usuariosFiltrados = computed(() => {
-
-  return usuarios.value.results.filter(usuario =>
-
-    usuario.nombre
-      .toLowerCase()
-      .includes(busqueda.value.toLowerCase())
-
-  )
-
-})
-
 const cargarUsuarios = async () => {
 
     try {
@@ -209,7 +196,8 @@ const cargarUsuarios = async () => {
 
             currentPage.value,
 
-            rolSeleccionado.value
+            rolSeleccionado.value,
+            busqueda.value
 
         )
 
@@ -260,11 +248,9 @@ const guardarUsuario = async (datos) => {
 
     try {
 
-        // Copia de los datos
         const datosEnviar = { ...datos }
 
-        // Si estamos editando y la contraseña está vacía,
-        // no la enviamos al backend.
+
         if (
             usuarioSeleccionado.value &&
             (!datosEnviar.password || datosEnviar.password.trim() === '')
@@ -349,13 +335,13 @@ const paginaAnterior = async () => {
 
 const eliminarUsuario = async (id) => {
 
-  if(!confirm("¿Desea eliminar este usuario?")){
+  if (!confirm("¿Desea eliminar este usuario?")) {
 
     return
 
   }
 
-  try{
+  try {
 
     await deleteUser(id)
 
@@ -363,13 +349,29 @@ const eliminarUsuario = async (id) => {
 
   }
 
-  catch(error){
+  catch (error) {
 
     console.error(error)
 
   }
 
 }
+
+watch(busqueda, async () => {
+
+  currentPage.value = 1
+
+  await cargarUsuarios()
+
+})
+
+watch(rolSeleccionado, async () => {
+
+  currentPage.value = 1
+
+  await cargarUsuarios()
+
+})
 
 onMounted(() => {
 

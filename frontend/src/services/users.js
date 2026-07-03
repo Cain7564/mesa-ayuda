@@ -12,27 +12,19 @@ const getAuthHeaders = () => {
 
 }
 
-export const getUsers = async (page = 1, rol = '') => {
+export const getUsers = async (page = 1, rol = '', search = '') => {
 
     let url = `users/?page=${page}`
 
     if (rol) {
-
         url += `&rol=${rol}`
-
     }
 
-    const response = await api.get(
+    if (search) {
+        url += `&search=${search}`
+    }
 
-        url,
-
-        {
-
-            headers: getAuthHeaders()
-
-        }
-
-    )
+    const response = await api.get(url)
 
     return response.data
 

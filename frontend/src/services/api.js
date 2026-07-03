@@ -1,55 +1,35 @@
-import api from './api'
+import axios from 'axios'
 
-export const getUsers = async (page = 1, rol = '') => {
+const api = axios.create({
 
-    let url = `users/?page=${page}`
+  baseURL: 'http://127.0.0.1:8000/api/',
 
-    if (rol) {
+  headers: {
 
-        url += `&rol=${rol}`
+    'Content-Type': 'application/json'
+
+  }
+
+})
+
+api.interceptors.request.use(
+
+  (config) => {
+
+    const token = localStorage.getItem('access')
+
+    if (token) {
+
+      config.headers.Authorization = `Bearer ${token}`
 
     }
 
-    const response = await api.get(url)
+    return config
 
-    return response.data
+  },
 
-}
+  (error) => Promise.reject(error)
 
-export const createUser = async (userData) => {
+)
 
-    const response = await api.post(
-
-        'users/',
-
-        userData
-
-    )
-
-    return response.data
-
-}
-
-export const updateUser = async (id, userData) => {
-
-    const response = await api.put(
-
-        `users/${id}/`,
-
-        userData
-
-    )
-
-    return response.data
-
-}
-
-export const deleteUser = async (id) => {
-
-    await api.delete(
-
-        `users/${id}/`
-
-    )
-
-}
+export default api

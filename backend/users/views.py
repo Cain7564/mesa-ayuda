@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -19,9 +19,15 @@ class UsuarioListCreateView(generics.ListCreateAPIView):
     filter_backends = [
         DjangoFilterBackend,
         OrderingFilter,
+        SearchFilter
     ]
 
     filterset_fields = ['rol']
+
+    search_fields = [
+        'nombre',
+        'correo',
+    ]
 
     ordering_fields = [
         'nombre',
