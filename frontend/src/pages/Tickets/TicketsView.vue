@@ -126,6 +126,22 @@
       @next="siguientePagina"
     />
 
+    <TicketModal
+
+    :visible="modalVisible"
+
+    :title="modalTitle"
+
+    :buttonText="buttonText"
+
+    :ticket="ticketSeleccionado"
+
+    @close="cerrarModal"
+
+    @save="guardarTicket"
+
+/>
+
   </div>
 
 </template>
@@ -139,8 +155,9 @@ import InputField from '../../components/InputField.vue'
 import PrimaryButton from '../../components/PrimaryButton.vue'
 import DataTable from '../../components/DataTable.vue'
 import Pagination from '../../components/Pagination.vue'
+import TicketModal from './components/TicketModal.vue'
 
-import { getTickets } from '../../services/tickets'
+import { getTickets, createTicket, updateTicket, deleteTicket } from '../../services/tickets'
 
 const tickets = ref({
 
@@ -155,6 +172,14 @@ const tickets = ref({
 })
 
 const currentPage = ref(1)
+
+const modalVisible = ref(false)
+
+const modalTitle = ref('Nuevo Ticket')
+
+const buttonText = ref('Guardar')
+
+const ticketSeleccionado = ref(null)
 
 const busqueda = ref('')
 
@@ -232,7 +257,67 @@ const cargarTickets = async () => {
 
 const abrirNuevoTicket = () => {
 
-    alert('Aquí irá el formulario del ticket.')
+    ticketSeleccionado.value = null
+
+    modalTitle.value = 'Nuevo Ticket'
+
+    buttonText.value = 'Guardar'
+
+    modalVisible.value = true
+
+}
+
+const editarTicket = (ticket) => {
+
+    ticketSeleccionado.value = ticket
+
+    modalTitle.value = 'Editar Ticket'
+
+    buttonText.value = 'Actualizar'
+
+    modalVisible.value = true
+
+}
+
+const cerrarModal = () => {
+
+    modalVisible.value = false
+
+}
+
+const guardarTicket = async (datos) => {
+
+    try {
+
+        if (ticketSeleccionado.value) {
+
+            await updateTicket(
+
+                ticketSeleccionado.value.id,
+
+                datos
+
+            )
+
+        }
+
+        else {
+
+            await createTicket(datos)
+
+        }
+
+        cerrarModal()
+
+        await cargarTickets()
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+    }
 
 }
 

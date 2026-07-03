@@ -60,6 +60,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
             'fecha_cierre',
         ]
+    read_only_fields = ['fecha', 'usuario', 'fecha_cierre']     
 
     def validate_asunto(self, value):
 
