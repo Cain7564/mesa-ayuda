@@ -312,23 +312,25 @@ const cerrarModal = () => {
 }
 const guardarTicket = async (datos) => {
 
+    console.log("===== DATOS DEL TICKET =====")
+    console.log(datos)
+
     try {
 
         if (ticketSeleccionado.value) {
 
             await updateTicket(
-
                 ticketSeleccionado.value.id,
-
                 datos
-
             )
 
-        }
+            alert("Ticket actualizado correctamente.")
 
-        else {
+        } else {
 
             await createTicket(datos)
+
+            alert("Ticket creado correctamente.")
 
         }
 
@@ -340,7 +342,23 @@ const guardarTicket = async (datos) => {
 
     catch(error){
 
-        console.error(error)
+        console.log("===== ERROR =====")
+
+        console.log(error.response)
+
+        if(error.response){
+
+            console.log(error.response.data)
+
+            alert(
+                JSON.stringify(
+                    error.response.data,
+                    null,
+                    2
+                )
+            )
+
+        }
 
     }
 
