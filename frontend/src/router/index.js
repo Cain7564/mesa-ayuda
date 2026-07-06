@@ -7,8 +7,8 @@ import TicketsView from '../pages/Tickets/TicketsView.vue'
 import InventoryView from '../pages/Inventory/InventoryView.vue'
 import ReportsView from '../pages/Reports/ReportsView.vue'
 import TecnicosView from '../pages/Tecnicos/TecnicosView.vue'
+
 import MainLayout from '../layouts/MainLayout.vue'
-import InventoryLayout from '../layouts/InventoryView.vue'
 
 const routes = [
 
@@ -60,18 +60,11 @@ const routes = [
       },
 
       {
-        path: '/tecnicos',
+        path: 'tecnicos',
         name: 'tecnicos',
         component: TecnicosView
         
       },
-
-      {
-        path: '/inventory',
-        name: 'inventory',
-        component: InventoryView
-      }
-
     ]
 
   }

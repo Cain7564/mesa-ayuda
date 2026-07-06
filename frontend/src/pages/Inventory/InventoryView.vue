@@ -18,7 +18,6 @@
 
           <select
             v-model="tipoSeleccionado"
-            @change="cargarEquipos"
           >
 
             <option value="">
@@ -51,7 +50,6 @@
 
           <select
             v-model="estadoSeleccionado"
-            @change="cargarEquipos"
           >
 
             <option value="">
@@ -84,7 +82,6 @@
 
           <select
             v-model="ordenSeleccionado"
-            @change="cargarEquipos"
           >
 
             <option value="">
@@ -174,26 +171,312 @@
 
     />
 
-    <ConfirmDelete
-
-      :visible="deleteDialogVisible"
-
-      title="Eliminar equipo"
-
-      message="¿Está seguro que desea eliminar este equipo?"
-
-      @cancel="cancelarEliminar"
-
-      @confirm="confirmarEliminar"
-
-    />
-
   </div>
 
 </template>
+<script setup>
+
+import { ref, watch, onMounted } from 'vue'
+
+import PageHeader from '../../components/PageHeader.vue'
+import InputField from '../../components/InputField.vue'
+import PrimaryButton from '../../components/PrimaryButton.vue'
+import DataTable from '../../components/DataTable.vue'
+import Pagination from '../../components/Pagination.vue'
+import EquipoModal from './components/EquipoModal.vue'
+
+import {
+
+  getEquipos,
+
+  createEquipo,
+
+  updateEquipo,
+
+  deleteEquipo
+
+} from '../../services/inventory'
+
+const equipos = ref({
+
+    count:0,
+
+    next:null,
+
+    previous:null,
+
+    results:[]
+
+})
+
+const currentPage = ref(1)
+
+const modalVisible = ref(false)
+
+const modalTitle = ref('Nuevo Equipo')
+
+const buttonText = ref('Guardar')
+
+const equipoSeleccionado = ref(null)
+
+const busqueda = ref('')
+
+const tipoSeleccionado = ref('')
+
+const estadoSeleccionado = ref('')
+
+const ordenSeleccionado = ref('')
+
+const columns = [
+
+    {
+        key:'codigo',
+        label:'Código'
+    },
+
+    {
+        key:'tipo',
+        label:'Tipo'
+    },
+
+    {
+        key:'marca_nombre',
+        label:'Marca'
+    },
+
+    {
+        key:'modelo',
+        label:'Modelo'
+    },
+
+    {
+        key:'usuario_nombre',
+        label:'Usuario'
+    },
+
+    {
+        key:'estado_nombre',
+        label:'Estado'
+    },
+
+    {
+        key:'ubicacion_nombre',
+        label:'Ubicación'
+    }
+
+]
+
+const cargarEquipos = async () => {
+
+    try{
+
+        equipos.value = await getEquipos(
+
+            currentPage.value,
+
+            tipoSeleccionado.value,
+
+            estadoSeleccionado.value,
+
+            busqueda.value,
+
+            ordenSeleccionado.value
+
+        )
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+    }
+
+}
+
+const abrirNuevoEquipo = () => {
+
+    equipoSeleccionado.value = null
+
+    modalTitle.value = 'Nuevo Equipo'
+
+    buttonText.value = 'Guardar'
+
+    modalVisible.value = true
+
+}
+
+const editarEquipo = (equipo) => {
+
+    equipoSeleccionado.value = equipo
+
+    modalTitle.value = 'Editar Equipo'
+
+    buttonText.value = 'Actualizar'
+
+    modalVisible.value = true
+
+}
+
+const cerrarModal = () => {
+
+    modalVisible.value = false
+
+}
+
+const guardarEquipo = async (datos) => {
+
+    try{
+
+        if(equipoSeleccionado.value){
+
+            await updateEquipo(
+
+                equipoSeleccionado.value.id,
+
+                datos
+
+            )
+
+            alert("Equipo actualizado correctamente.")
+
+        }
+
+        else{
+
+            await createEquipo(datos)
+
+            alert("Equipo creado correctamente.")
+
+        }
+
+        cerrarModal()
+
+        await cargarEquipos()
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+        if(error.response){
+
+            alert(
+
+                JSON.stringify(
+
+                    error.response.data,
+
+                    null,
+
+                    2
+
+                )
+
+            )
+
+        }
+
+    }
+
+}
+
+const eliminarEquipo = async (id) => {
+
+    if(!confirm("¿Desea eliminar este equipo?")){
+
+        return
+
+    }
+
+    try{
+
+        await deleteEquipo(id)
+
+        await cargarEquipos()
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+    }
+
+}
+
+const siguientePagina = async () => {
+
+    if(!equipos.value.next){
+
+        return
+
+    }
+
+    currentPage.value++
+
+    await cargarEquipos()
+
+}
+
+const paginaAnterior = async () => {
+
+    if(!equipos.value.previous){
+
+        return
+
+    }
+
+    currentPage.value--
+
+    await cargarEquipos()
+
+}
+
+watch(busqueda, async()=>{
+
+    currentPage.value = 1
+
+    await cargarEquipos()
+
+})
+
+watch(tipoSeleccionado, async()=>{
+
+    currentPage.value = 1
+
+    await cargarEquipos()
+
+})
+
+watch(estadoSeleccionado, async()=>{
+
+    currentPage.value = 1
+
+    await cargarEquipos()
+
+})
+
+watch(ordenSeleccionado, async()=>{
+
+    currentPage.value = 1
+
+    await cargarEquipos()
+
+})
+
+onMounted(()=>{
+
+    cargarEquipos()
+
+})
+
+</script>
+
 <style scoped>
 
-.inventory-page{
+.tickets-page{
 
     padding:20px;
 
@@ -226,10 +509,6 @@
     border:1px solid #ccc;
 
     border-radius:6px;
-
-    min-width:170px;
-
-    font-size:14px;
 
 }
 
