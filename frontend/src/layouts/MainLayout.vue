@@ -20,6 +20,12 @@
         </li>
 
         <li>
+          <RouterLink to="/tecnicos">
+            Técnicos
+          </RouterLink>
+        </li>
+        
+        <li>
           <RouterLink to="/tickets">
             Tickets
           </RouterLink>
