@@ -317,20 +317,39 @@ const guardarTicket = async (datos) => {
 
     try {
 
+        const datosEnviar = {
+
+            ...datos
+
+        }
+
         if (ticketSeleccionado.value) {
 
             await updateTicket(
+
                 ticketSeleccionado.value.id,
-                datos
+
+                datosEnviar
+
             )
 
-            alert("Ticket actualizado correctamente.")
+            alert(" Ticket actualizado correctamente.")
 
-        } else {
+        }
 
-            await createTicket(datos)
+        else {
 
-            alert("Ticket creado correctamente.")
+            const ticket = await createTicket(
+
+                datosEnviar
+
+            )
+
+            alert(
+
+                ` Ticket #${ticket.id} creado correctamente.`
+
+            )
 
         }
 
@@ -344,19 +363,31 @@ const guardarTicket = async (datos) => {
 
         console.log("===== ERROR =====")
 
-        console.log(error.response)
+        console.log(error)
 
         if(error.response){
 
             console.log(error.response.data)
 
             alert(
+
                 JSON.stringify(
+
                     error.response.data,
+
                     null,
+
                     2
+
                 )
+
             )
+
+        }
+
+        else{
+
+            alert("No fue posible comunicarse con el servidor.")
 
         }
 

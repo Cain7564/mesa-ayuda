@@ -32,7 +32,56 @@
       </select>
 
     </div>
+    
+    <div
+  v-if="editando"
+  class="field"
+>
 
+  <label>Estado</label>
+
+  <select v-model="form.estado">
+
+    <option value="Abierto">
+      Abierto
+    </option>
+
+    <option value="En proceso">
+      En proceso
+    </option>
+
+    <option value="Cerrado">
+      Cerrado
+    </option>
+
+  </select>
+
+</div>
+
+<div
+  v-if="editando"
+  class="field"
+>
+
+  <label>Técnico</label>
+
+  <select
+    v-model="form.tecnico"
+  >
+
+    <option
+      v-for="tecnico in tecnicos"
+      :key="tecnico.id"
+      :value="tecnico.id"
+    >
+
+      {{ tecnico.nombre }}
+
+    </option>
+
+  </select>
+
+</div>
 
     <div class="field">
 
@@ -118,11 +167,10 @@
 
 <script setup>
 
-import { reactive, watch } from 'vue'
-
+import { reactive, watch, computed } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import PrimaryButton from '../../../components/PrimaryButton.vue'
-import { getUsuariosSimple,} from '../../../services/users'
+import { getUsuariosSimple, getTecnicosSimple } from '../../../services/users'
 
 import { getCategoriasSimple } from '../../../services/tickets'
 
@@ -135,6 +183,8 @@ import {
 } from 'vue'
 
 const usuarios = ref([])
+
+const tecnicos = ref([])
 
 const categorias = ref([])
 
@@ -157,6 +207,7 @@ const props = defineProps({
   }
 
 })
+const editando = computed(() => props.ticket !== null)
 
 const emit = defineEmits(['save'])
 
@@ -187,6 +238,8 @@ watch(
       form.prioridad = nuevo.prioridad
       form.usuario = nuevo.usuario
       form.categoria = nuevo.categoria
+      form.estado = nuevo.estado || 'Abierto'
+      form.tecnico = nuevo.tecnico || ''
 
     } else {
 
@@ -221,9 +274,13 @@ const submitForm = () => {
 onMounted(async () => {
 
     usuarios.value = await getUsuariosSimple()
+
+    tecnicos.value = await getTecnicosSimple()
+
     categorias.value = await getCategoriasSimple()
 
 })
+
 
 </script>
 
