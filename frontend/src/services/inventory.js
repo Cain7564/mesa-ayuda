@@ -83,3 +83,51 @@ export const deleteEquipo = async (id) => {
     )
 
 }
+
+export const getMarcas = async () => {
+
+    const response = await api.get(
+
+        'marcas/'
+
+    )
+
+    return response.data
+
+}
+
+export const getSistemasOperativos = async () => {
+
+    const response = await api.get(
+
+        'sistemas-operativos/'
+
+    )
+
+    return response.data
+
+}
+
+export const getUbicaciones = async () => {
+
+    const response = await api.get(
+
+        'ubicaciones/'
+
+    )
+
+    return response.data
+
+}
+
+export const getEstadosEquipo = async () => {
+
+    const response = await api.get(
+
+        'estados-equipo/'
+
+    )
+
+    return response.data
+
+}

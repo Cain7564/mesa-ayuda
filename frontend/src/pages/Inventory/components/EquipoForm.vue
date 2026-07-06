@@ -1,48 +1,154 @@
 <template>
-  <form class="user-form" @submit.prevent="submitForm">
 
-    <div class="row">
-      <InputField
-        label="Nombre"
-        placeholder="Ingrese el nombre"
-        v-model="form.nombre"
-      />
+  <form class="equipo-form" @submit.prevent="submitForm">
+
+    <InputField
+      label="Código"
+      placeholder="Ingrese el código"
+      v-model="form.codigo"
+    />
+
+    <div class="field">
+
+      <label>Tipo</label>
+
+      <select v-model="form.tipo">
+
+        <option value="PC">PC</option>
+        <option value="LAPTOP">Laptop</option>
+        <option value="MONITOR">Monitor</option>
+        <option value="IMPRESORA">Impresora</option>
+
+      </select>
+
     </div>
 
-    <div class="row">
-      <InputField
-        label="Correo"
-        placeholder="Ingrese el correo"
-        type="email"
-        v-model="form.correo"
-      />
-    </div>
+    <InputField
+      label="Modelo"
+      placeholder="Ingrese el modelo"
+      v-model="form.modelo"
+    />
 
-    <div class="row">
-      <InputField
-        label="Contraseña"
-        placeholder="Ingrese la contraseña"
-        type="password"
-        v-model="form.password"
-      />
-    </div>
+    <InputField
+      label="Número de serie"
+      placeholder="Ingrese el número de serie"
+      v-model="form.numero_serie"
+    />
 
-    <div class="row">
+    <InputField
+      label="Procesador"
+      placeholder="Ingrese el procesador"
+      v-model="form.procesador"
+    />
 
-      <label>Rol</label>
+    <InputField
+      label="Memoria RAM"
+      placeholder="Ej: 16 GB"
+      v-model="form.memoria_ram"
+    />
 
-      <select v-model="form.rol">
+    <InputField
+      label="Disco"
+      placeholder="Ej: 512 GB SSD"
+      v-model="form.disco"
+    />
 
-        <option value="ADMIN">
-          Administrador
+    <InputField
+      label="Dirección IP"
+      placeholder="192.168.1.10"
+      v-model="form.direccion_ip"
+    />
+
+    <InputField
+      label="Dirección MAC"
+      placeholder="AA:BB:CC:DD:EE:FF"
+      v-model="form.direccion_mac"
+    />
+
+    <div class="field">
+
+      <label>Marca</label>
+
+      <select v-model="form.marca">
+
+        <option
+          v-for="marca in marcas"
+          :key="marca.id"
+          :value="marca.id"
+        >
+          {{ marca.nombre }}
         </option>
 
-        <option value="TECNICO">
-          Técnico
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>Sistema Operativo</label>
+
+      <select v-model="form.sistema_operativo">
+
+        <option
+          v-for="so in sistemas"
+          :key="so.id"
+          :value="so.id"
+        >
+          {{ so.nombre }}
         </option>
 
-        <option value="USUARIO">
-          Usuario
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>Usuario asignado</label>
+
+      <select v-model="form.usuario_asignado">
+
+        <option
+          v-for="usuario in usuarios"
+          :key="usuario.id"
+          :value="usuario.id"
+        >
+          {{ usuario.nombre }}
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>Estado</label>
+
+      <select v-model="form.estado">
+
+        <option
+          v-for="estado in estados"
+          :key="estado.id"
+          :value="estado.id"
+        >
+          {{ estado.nombre }}
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>Ubicación</label>
+
+      <select v-model="form.ubicacion">
+
+        <option
+          v-for="ubicacion in ubicaciones"
+          :key="ubicacion.id"
+          :value="ubicacion.id"
+        >
+          {{ ubicacion.nombre }}
         </option>
 
       </select>
@@ -60,62 +166,153 @@
     </div>
 
   </form>
+
 </template>
 
 <script setup>
-
-import { reactive, watch } from 'vue'
+import { reactive, watch, ref, onMounted } from 'vue'
 
 import InputField from '../../../components/InputField.vue'
 import PrimaryButton from '../../../components/PrimaryButton.vue'
+import { getUsuariosSimple } from '../../../services/users'
+
+import {
+
+    getMarcas,
+
+    getSistemasOperativos,
+
+    getUbicaciones,
+
+    getEstadosEquipo
+
+} from '../../../services/inventory'
+
+
 
 const props = defineProps({
 
-  user: {
+  equipo: {
+
     type: Object,
+
     default: null
+
   },
 
   buttonText: {
+
     type: String,
+
     default: 'Guardar'
+
   }
 
 })
+const emit = defineEmits([
 
-const emit = defineEmits(['save'])
+  'save'
 
+])
 const form = reactive({
 
-  nombre: '',
+  codigo: '',
 
-  correo: '',
+  tipo: 'PC',
 
-  password: '',
+  marca: '',
 
-  rol: 'USUARIO'
+  modelo: '',
+
+  numero_serie: '',
+
+  procesador: '',
+
+  memoria_ram: '',
+
+  disco: '',
+
+  sistema_operativo: '',
+
+  direccion_ip: '',
+
+  direccion_mac: '',
+
+  usuario_asignado: '',
+
+  estado: '',
+
+  ubicacion: ''
 
 })
 
 watch(
 
-  () => props.user,
+  () => props.equipo,
 
-  (newUser) => {
+  (nuevo) => {
 
-    if (newUser) {
+    if (nuevo) {
 
-      form.nombre = newUser.nombre
-      form.correo = newUser.correo
-      form.password = ''
-      form.rol = newUser.rol
+      form.codigo = nuevo.codigo
 
-    } else {
+      form.tipo = nuevo.tipo
 
-      form.nombre = ''
-      form.correo = ''
-      form.password = ''
-      form.rol = 'USUARIO'
+      form.marca = nuevo.marca
+
+      form.modelo = nuevo.modelo
+
+      form.numero_serie = nuevo.numero_serie
+
+      form.procesador = nuevo.procesador
+
+      form.memoria_ram = nuevo.memoria_ram
+
+      form.disco = nuevo.disco
+
+      form.sistema_operativo = nuevo.sistema_operativo
+
+      form.direccion_ip = nuevo.direccion_ip
+
+      form.direccion_mac = nuevo.direccion_mac
+
+      form.usuario_asignado = nuevo.usuario_asignado
+
+      form.estado = nuevo.estado
+
+      form.ubicacion = nuevo.ubicacion
+
+    }
+
+    else {
+
+      form.codigo = ''
+
+      form.tipo = 'PC'
+
+      form.marca = ''
+
+      form.modelo = ''
+
+      form.numero_serie = ''
+
+      form.procesador = ''
+
+      form.memoria_ram = ''
+
+      form.disco = ''
+
+      form.sistema_operativo = ''
+
+      form.direccion_ip = ''
+
+      form.direccion_mac = ''
+
+      form.usuario_asignado = ''
+
+      form.estado = ''
+
+      form.ubicacion = ''
 
     }
 
@@ -129,21 +326,50 @@ watch(
 
 )
 
+const marcas = ref([])
+
+const sistemas = ref([])
+
+const usuarios = ref([])
+
+const estados = ref([])
+
+const ubicaciones = ref([])
+
 const submitForm = () => {
 
-  emit('save', {
+    emit('save', {
 
-    nombre: form.nombre,
+        ...form
 
-    correo: form.correo,
-
-    password: form.password,
-
-    rol: form.rol
-
-  })
+    })
 
 }
+
+
+onMounted(async () => {
+
+    try{
+
+        usuarios.value = await getUsuariosSimple()
+
+        marcas.value = await getMarcas()
+
+        sistemas.value = await getSistemasOperativos()
+
+        estados.value = await getEstadosEquipo()
+
+        ubicaciones.value = await getUbicaciones()
+
+    }
+
+    catch(error){
+
+        console.error(error)
+
+    }
+
+})
 
 </script>
 
