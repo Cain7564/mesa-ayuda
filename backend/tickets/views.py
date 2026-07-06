@@ -97,14 +97,21 @@ class TicketListCreateView(generics.ListCreateAPIView):
 
     ]
 
-    def perform_create(self, serializer):
+from users.models import Tecnico
 
-        serializer.save(
+def perform_create(self, serializer):
 
-            fecha=timezone.now()
+    tecnico = Tecnico.objects.order_by("id").first()
 
-        )
+    serializer.save(
 
+        fecha=timezone.now(),
+
+        tecnico=tecnico,
+
+        estado="Abierto"
+
+    )
 
 class TicketDetailView(generics.RetrieveUpdateDestroyAPIView):
 
