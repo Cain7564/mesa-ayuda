@@ -1,6 +1,7 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
+
 
 from .models import (
     Marca,
@@ -68,6 +69,7 @@ class EquipoListCreateView(generics.ListCreateAPIView):
     filter_backends = [
         DjangoFilterBackend,
         OrderingFilter,
+        SearchFilter,
     ]
 
     filterset_fields = [
@@ -76,6 +78,12 @@ class EquipoListCreateView(generics.ListCreateAPIView):
         'estado',
         'ubicacion',
         'sistema_operativo',
+    ]
+
+    search_fields = [
+        'codigo',
+        'modelo',
+        'tipo',
     ]
 
     ordering_fields = [

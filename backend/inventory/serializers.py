@@ -39,9 +39,72 @@ class EstadoEquipoSerializer(serializers.ModelSerializer):
 
 class EquipoSerializer(serializers.ModelSerializer):
 
+    marca_nombre = serializers.CharField(
+        source='marca.nombre',
+        read_only=True
+    )
+
+    estado_nombre = serializers.CharField(
+        source='estado.nombre',
+        read_only=True
+    )
+
+    ubicacion_nombre = serializers.CharField(
+        source='ubicacion.nombre',
+        read_only=True
+    )
+
+    usuario_nombre = serializers.CharField(
+        source='usuario_asignado.nombre',
+        read_only=True
+    )
+
+    so_nombre = serializers.CharField(
+        source='sistema_operativo.nombre',
+        read_only=True
+    )
+
     class Meta:
         model = Equipo
-        fields = '__all__'
+
+        fields = [
+
+            'id',
+
+            'codigo',
+
+            'tipo',
+
+            'marca',
+            'marca_nombre',
+
+            'modelo',
+
+            'numero_serie',
+
+            'procesador',
+
+            'memoria_ram',
+
+            'disco',
+
+            'sistema_operativo',
+            'so_nombre',
+
+            'direccion_ip',
+
+            'direccion_mac',
+
+            'usuario_asignado',
+            'usuario_nombre',
+
+            'estado',
+            'estado_nombre',
+
+            'ubicacion',
+            'ubicacion_nombre',
+
+        ]
 
     def validate_codigo(self, value):
 
