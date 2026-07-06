@@ -33,19 +33,6 @@
 
     </div>
 
-    <div class="field">
-
-      <label>Estado</label>
-
-      <select v-model="form.estado">
-
-        <option value="Abierto">Abierto</option>
-        <option value="En proceso">En proceso</option>
-        <option value="Cerrado">Cerrado</option>
-
-      </select>
-
-    </div>
 
     <div class="field">
 
@@ -74,40 +61,6 @@
         >
 
           {{ usuario.nombre }}
-
-        </option>
-
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label>Técnico</label>
-
-      <select
-        v-model="form.tecnico"
-      >
-
-        <option
-          value=""
-        >
-
-          Seleccione...
-
-        </option>
-
-        <option
-
-          v-for="tecnico in tecnicos"
-
-          :key="tecnico.id"
-
-          :value="tecnico.id"
-
-        >
-
-          {{ tecnico.nombre }}
 
         </option>
 
@@ -169,19 +122,9 @@ import { reactive, watch } from 'vue'
 
 import InputField from '../../../components/InputField.vue'
 import PrimaryButton from '../../../components/PrimaryButton.vue'
-import {
+import { getUsuariosSimple,} from '../../../services/users'
 
-    getUsuariosSimple,
-
-    getTecnicosSimple
-
-} from '../../../services/users'
-
-import {
-
-    getCategoriasSimple
-
-} from '../../../services/tickets'
+import { getCategoriasSimple } from '../../../services/tickets'
 
 import {
 
@@ -192,8 +135,6 @@ import {
 } from 'vue'
 
 const usuarios = ref([])
-
-const tecnicos = ref([])
 
 const categorias = ref([])
 
@@ -227,11 +168,7 @@ const form = reactive({
 
   prioridad: 'Media',
 
-  estado: 'Abierto',
-
   usuario: '',
-
-  tecnico: '',
 
   categoria: ''
 
@@ -248,9 +185,7 @@ watch(
       form.asunto = nuevo.asunto
       form.descripcion = nuevo.descripcion
       form.prioridad = nuevo.prioridad
-      form.estado = nuevo.estado
       form.usuario = nuevo.usuario
-      form.tecnico = nuevo.tecnico
       form.categoria = nuevo.categoria
 
     } else {
@@ -258,9 +193,7 @@ watch(
       form.asunto = ''
       form.descripcion = ''
       form.prioridad = 'Media'
-      form.estado = 'Abierto'
       form.usuario = ''
-      form.tecnico = ''
       form.categoria = ''
 
     }
@@ -288,9 +221,6 @@ const submitForm = () => {
 onMounted(async () => {
 
     usuarios.value = await getUsuariosSimple()
-
-    tecnicos.value = await getTecnicosSimple()
-
     categorias.value = await getCategoriasSimple()
 
 })
