@@ -54,15 +54,50 @@
 
 </div>
 
-    <InputField
-      label="Disco"
-      placeholder="Ej: 512 GB SSD"
-      v-model="form.disco"
+<div class="field">
+
+  <label>Disco</label>
+
+  <div class="disk-container">
+
+    <input
+      type="number"
+      min="1"
+      v-model="capacidadDisco"
+      placeholder="512"
     />
+
+    <select v-model="unidadDisco">
+
+      <option value="GB">
+        GB
+      </option>
+
+      <option value="TB">
+        TB
+      </option>
+
+    </select>
+
+    <select v-model="tipoDisco">
+
+      <option value="SSD">
+        SSD
+      </option>
+
+      <option value="HDD">
+        HDD
+      </option>
+
+    </select>
+
+  </div>
+
+</div>
 
     <InputField
       label="Dirección IP"
-      placeholder="192.168.1.10"
+      placeholder="192.168.1.100"
       v-model="form.direccion_ip"
     />
 
@@ -285,6 +320,18 @@ watch(
 
       form.ubicacion = nuevo.ubicacion
 
+    if (nuevo.disco) {
+
+      const partes = nuevo.disco.split(' ')
+
+      capacidadDisco.value = partes[0]
+
+      unidadDisco.value = partes[1]
+
+      tipoDisco.value = partes[2]
+
+  }
+
     }
 
     else {
@@ -315,6 +362,12 @@ watch(
 
       form.ubicacion = ''
 
+      capacidadDisco.value = ''
+
+      unidadDisco.value = 'GB'
+
+      tipoDisco.value = 'SSD'
+
     }
 
   },
@@ -336,6 +389,12 @@ const usuarios = ref([])
 const estados = ref([])
 
 const ubicaciones = ref([])
+
+const capacidadDisco = ref('')
+
+const unidadDisco = ref('GB')
+
+const tipoDisco = ref('SSD')
 
 const submitForm = () => {
 
@@ -464,6 +523,36 @@ select{
     color:#555;
 
 }
+.disk-container{
 
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.disk-container input{
+
+    flex:1;
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+.disk-container select{
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
 
 </style>
