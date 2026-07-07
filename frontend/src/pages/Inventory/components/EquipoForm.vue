@@ -349,23 +349,34 @@ const submitForm = () => {
 
 onMounted(async () => {
 
-    try{
+    try {
 
-        usuarios.value = await getUsuariosSimple()
+        const respuestaUsuarios = await getUsuariosSimple()
+        usuarios.value = respuestaUsuarios.results ?? respuestaUsuarios
 
-        marcas.value = await getMarcas()
+        const respuestaMarcas = await getMarcas()
+        marcas.value = respuestaMarcas.results ?? respuestaMarcas
 
-        sistemas.value = await getSistemasOperativos()
+        const respuestaSistemas = await getSistemasOperativos()
+        sistemas.value = respuestaSistemas.results ?? respuestaSistemas
 
-        estados.value = await getEstadosEquipo()
+        const respuestaEstados = await getEstadosEquipo()
+        estados.value = respuestaEstados.results ?? respuestaEstados
 
-        ubicaciones.value = await getUbicaciones()
+        const respuestaUbicaciones = await getUbicaciones()
+        ubicaciones.value = respuestaUbicaciones.results ?? respuestaUbicaciones
+
+        console.log("Usuarios:", usuarios.value)
+        console.log("Marcas:", marcas.value)
+        console.log("Sistemas:", sistemas.value)
+        console.log("Estados:", estados.value)
+        console.log("Ubicaciones:", ubicaciones.value)
 
     }
 
-    catch(error){
+    catch (error) {
 
-        console.error(error)
+        console.error("Error cargando catálogos:", error)
 
     }
 
