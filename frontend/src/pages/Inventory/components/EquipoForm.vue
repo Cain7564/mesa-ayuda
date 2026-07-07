@@ -1,13 +1,6 @@
 <template>
 
   <form class="equipo-form" @submit.prevent="submitForm">
-
-    <InputField
-      label="Código"
-      placeholder="Ingrese el código"
-      v-model="form.codigo"
-    />
-
     <div class="field">
 
       <label>Tipo</label>
@@ -216,8 +209,6 @@ const emit = defineEmits([
 ])
 const form = reactive({
 
-  codigo: '',
-
   tipo: 'PC',
 
   marca: '',
@@ -254,8 +245,6 @@ watch(
 
     if (nuevo) {
 
-      form.codigo = nuevo.codigo
-
       form.tipo = nuevo.tipo
 
       form.marca = nuevo.marca
@@ -285,8 +274,6 @@ watch(
     }
 
     else {
-
-      form.codigo = ''
 
       form.tipo = 'PC'
 

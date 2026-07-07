@@ -63,48 +63,37 @@ class EquipoSerializer(serializers.ModelSerializer):
         source='sistema_operativo.nombre',
         read_only=True
     )
-
     class Meta:
         model = Equipo
 
         fields = [
-
             'id',
-
             'codigo',
-
             'tipo',
-
             'marca',
             'marca_nombre',
-
             'modelo',
-
             'numero_serie',
-
             'procesador',
-
             'memoria_ram',
-
             'disco',
-
             'sistema_operativo',
             'so_nombre',
-
             'direccion_ip',
-
             'direccion_mac',
-
             'usuario_asignado',
             'usuario_nombre',
-
             'estado',
             'estado_nombre',
-
             'ubicacion',
             'ubicacion_nombre',
-
         ]
+
+        extra_kwargs = {
+            'codigo': {
+                'required': False
+            }
+        }
 
     def validate_codigo(self, value):
 
