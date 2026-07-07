@@ -33,12 +33,26 @@
       placeholder="Ingrese el procesador"
       v-model="form.procesador"
     />
+      
 
-    <InputField
-      label="Memoria RAM"
-      placeholder="Ej: 16 GB"
+<div class="field">
+
+  <label>Memoria RAM</label>
+
+  <div class="inline-field">
+
+    <input
+      type="number"
+      min="1"
       v-model="form.memoria_ram"
+      placeholder="16"
     />
+
+    <span>GB</span>
+
+  </div>
+
+</div>
 
     <InputField
       label="Disco"
@@ -420,5 +434,36 @@ select{
     margin-top:10px;
 
 }
+
+.inline-field{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.inline-field input{
+
+    flex:1;
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+.inline-field span{
+
+    font-weight:bold;
+
+    color:#555;
+
+}
+
 
 </style>
