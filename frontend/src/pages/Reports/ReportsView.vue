@@ -4,67 +4,141 @@
 
     <PageHeader title="Reportes" />
 
-    <div class="cards">
+    <div class="grid">
 
       <div class="card">
 
-        <h3>Usuarios</h3>
+        <h2>🎫 Tickets por Estado</h2>
 
-        <span>{{ reporte.usuarios }}</span>
+        <div class="item">
+
+          <span>🟢 Abiertos</span>
+
+          <strong>{{ reporte.tickets_abiertos }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🟡 En proceso</span>
+
+          <strong>{{ reporte.tickets_proceso }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🔴 Cerrados</span>
+
+          <strong>{{ reporte.tickets_cerrados }}</strong>
+
+        </div>
 
       </div>
 
       <div class="card">
 
-        <h3>Técnicos</h3>
+        <h2>🔥 Tickets por Prioridad</h2>
 
-        <span>{{ reporte.tecnicos }}</span>
+        <div class="item">
+
+          <span>🔴 Alta</span>
+
+          <strong>{{ reporte.tickets_alta }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🟡 Media</span>
+
+          <strong>{{ reporte.tickets_media }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🟢 Baja</span>
+
+          <strong>{{ reporte.tickets_baja }}</strong>
+
+        </div>
 
       </div>
 
       <div class="card">
 
-        <h3>Tickets</h3>
+        <h2>💻 Inventario</h2>
 
-        <span>{{ reporte.tickets }}</span>
+        <div class="item">
+
+          <span>🟢 Activos</span>
+
+          <strong>{{ reporte.equipos_activos }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🟠 En reparación</span>
+
+          <strong>{{ reporte.equipos_reparacion }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🔵 En mantenimiento</span>
+
+          <strong>{{ reporte.equipos_mantenimiento }}</strong>
+
+        </div>
+
+        <div class="item">
+
+          <span>🔴 Baja</span>
+
+          <strong>{{ reporte.equipos_baja }}</strong>
+
+        </div>
 
       </div>
 
       <div class="card">
 
-        <h3>Equipos</h3>
+        <h2>🖥 Equipos por Tipo</h2>
 
-        <span>{{ reporte.equipos }}</span>
+        <div class="item">
 
-      </div>
+          <span>PC</span>
 
-    </div>
+          <strong>{{ reporte.pc }}</strong>
 
-    <div class="sections">
+        </div>
 
-      <div class="section">
+        <div class="item">
 
-        <h2>Tickets</h2>
+          <span>Laptop</span>
 
-        <p>🟢 Abiertos: {{ reporte.tickets_abiertos }}</p>
+          <strong>{{ reporte.laptop }}</strong>
 
-        <p>🟡 En proceso: {{ reporte.tickets_proceso }}</p>
+        </div>
 
-        <p>🔴 Cerrados: {{ reporte.tickets_cerrados }}</p>
+        <div class="item">
 
-      </div>
+          <span>Monitor</span>
 
-      <div class="section">
+          <strong>{{ reporte.monitor }}</strong>
 
-        <h2>Inventario</h2>
+        </div>
 
-        <p>🟢 Activos: {{ reporte.equipos_activos }}</p>
+        <div class="item">
 
-        <p>🟠 En reparación: {{ reporte.equipos_reparacion }}</p>
+          <span>Impresora</span>
 
-        <p>🔵 En mantenimiento: {{ reporte.equipos_mantenimiento }}</p>
+          <strong>{{ reporte.impresora }}</strong>
 
-        <p>🔴 Dados de baja: {{ reporte.equipos_baja }}</p>
+        </div>
 
       </div>
 
@@ -84,19 +158,17 @@ import { getReporteGeneral } from '../../services/reports'
 
 const reporte = ref({
 
-    usuarios:0,
-
-    tecnicos:0,
-
-    tickets:0,
-
-    equipos:0,
-
     tickets_abiertos:0,
 
     tickets_proceso:0,
 
     tickets_cerrados:0,
+
+    tickets_alta:0,
+
+    tickets_media:0,
+
+    tickets_baja:0,
 
     equipos_activos:0,
 
@@ -104,7 +176,15 @@ const reporte = ref({
 
     equipos_mantenimiento:0,
 
-    equipos_baja:0
+    equipos_baja:0,
+
+    pc:0,
+
+    laptop:0,
+
+    monitor:0,
+
+    impresora:0
 
 })
 
@@ -140,15 +220,13 @@ onMounted(()=>{
 
 }
 
-.cards{
+.grid{
 
     display:grid;
 
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
 
-    gap:20px;
-
-    margin-bottom:30px;
+    gap:25px;
 
 }
 
@@ -160,85 +238,41 @@ onMounted(()=>{
 
     padding:25px;
 
-    box-shadow:0 3px 10px rgba(0,0,0,.08);
-
-    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
 
 }
 
-.card h3{
-
-    margin:0;
-
-    color:#666;
-
-}
-
-.card span{
-
-    display:block;
-
-    margin-top:15px;
-
-    font-size:32px;
-
-    font-weight:bold;
-
-    color:#1976d2;
-
-}
-
-.sections{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:25px;
-
-}
-
-.section{
-
-    background:white;
-
-    padding:25px;
-
-    border-radius:10px;
-
-    box-shadow:0 3px 10px rgba(0,0,0,.08);
-
-}
-
-.section h2{
+.card h2{
 
     margin-top:0;
 
     margin-bottom:20px;
 
-}
-
-.section p{
-
-    font-size:16px;
-
-    margin:12px 0;
+    color:#1976d2;
 
 }
 
-@media(max-width:900px){
+.item{
 
-    .cards{
+    display:flex;
 
-        grid-template-columns:1fr 1fr;
+    justify-content:space-between;
 
-    }
+    padding:10px 0;
 
-    .sections{
+    border-bottom:1px solid #eee;
 
-        grid-template-columns:1fr;
+}
 
-    }
+.item:last-child{
+
+    border-bottom:none;
+
+}
+
+.item strong{
+
+    color:#1976d2;
 
 }
 

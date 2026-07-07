@@ -12,14 +12,7 @@ class ReporteGeneralView(APIView):
 
         return Response({
 
-            "usuarios": Usuario.objects.count(),
-
-            "tecnicos": Tecnico.objects.count(),
-
-            "tickets": Ticket.objects.count(),
-
-            "equipos": Equipo.objects.count(),
-
+            # Tickets por estado
             "tickets_abiertos": Ticket.objects.filter(
                 estado="Abierto"
             ).count(),
@@ -32,6 +25,20 @@ class ReporteGeneralView(APIView):
                 estado="Cerrado"
             ).count(),
 
+            # Tickets por prioridad
+            "tickets_alta": Ticket.objects.filter(
+                prioridad="Alta"
+            ).count(),
+
+            "tickets_media": Ticket.objects.filter(
+                prioridad="Media"
+            ).count(),
+
+            "tickets_baja": Ticket.objects.filter(
+                prioridad="Baja"
+            ).count(),
+
+            # Inventario por estado
             "equipos_activos": Equipo.objects.filter(
                 estado__nombre="Activo"
             ).count(),
@@ -40,12 +47,29 @@ class ReporteGeneralView(APIView):
                 estado__nombre="En reparación"
             ).count(),
 
+            "equipos_mantenimiento": Equipo.objects.filter(
+                estado__nombre="En mantenimiento"
+            ).count(),
+
             "equipos_baja": Equipo.objects.filter(
                 estado__nombre="Dado de baja"
             ).count(),
 
-            "equipos_mantenimiento": Equipo.objects.filter(
-                estado__nombre="En mantenimiento"
+            # Equipos por tipo
+            "pc": Equipo.objects.filter(
+                tipo="PC"
+            ).count(),
+
+            "laptop": Equipo.objects.filter(
+                tipo="LAPTOP"
+            ).count(),
+
+            "monitor": Equipo.objects.filter(
+                tipo="MONITOR"
+            ).count(),
+
+            "impresora": Equipo.objects.filter(
+                tipo="IMPRESORA"
             ).count(),
 
         })
