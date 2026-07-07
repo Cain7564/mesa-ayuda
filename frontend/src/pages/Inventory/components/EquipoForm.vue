@@ -216,169 +216,70 @@ import { reactive, watch, ref, onMounted } from 'vue'
 
 import InputField from '../../../components/InputField.vue'
 import PrimaryButton from '../../../components/PrimaryButton.vue'
+
 import { getUsuariosSimple } from '../../../services/users'
 
 import {
-
     getMarcas,
-
     getSistemasOperativos,
-
     getUbicaciones,
-
     getEstadosEquipo
-
 } from '../../../services/inventory'
-
-
 
 const props = defineProps({
 
-  equipo: {
+    equipo: {
+        type: Object,
+        default: null
+    },
 
-    type: Object,
-
-    default: null
-
-  },
-
-  buttonText: {
-
-    type: String,
-
-    default: 'Guardar'
-
-  }
+    buttonText: {
+        type: String,
+        default: 'Guardar'
+    }
 
 })
+
 const emit = defineEmits([
-
-  'save'
-
+    'save'
 ])
+
 const form = reactive({
 
-  tipo: 'PC',
+    tipo: 'PC',
 
-  marca: '',
+    marca: '',
 
-  modelo: '',
+    modelo: '',
 
-  numero_serie: '',
+    numero_serie: '',
 
-  procesador: '',
+    procesador: '',
 
-  memoria_ram: '',
+    memoria_ram: '',
 
-  disco: '',
+    disco: '',
 
-  sistema_operativo: '',
+    sistema_operativo: '',
 
-  direccion_ip: '',
+    direccion_ip: '',
 
-  direccion_mac: '',
+    direccion_mac: '',
 
-  usuario_asignado: '',
+    usuario_asignado: '',
 
-  estado: '',
+    estado: '',
 
-  ubicacion: ''
+    ubicacion: ''
 
 })
 
-watch(
 
-  () => props.equipo,
+const capacidadDisco = ref('')
 
-  (nuevo) => {
+const unidadDisco = ref('GB')
 
-    if (nuevo) {
-
-      form.tipo = nuevo.tipo
-
-      form.marca = nuevo.marca
-
-      form.modelo = nuevo.modelo
-
-      form.numero_serie = nuevo.numero_serie
-
-      form.procesador = nuevo.procesador
-
-      form.memoria_ram = nuevo.memoria_ram
-
-      form.disco = nuevo.disco
-
-      form.sistema_operativo = nuevo.sistema_operativo
-
-      form.direccion_ip = nuevo.direccion_ip
-
-      form.direccion_mac = nuevo.direccion_mac
-
-      form.usuario_asignado = nuevo.usuario_asignado
-
-      form.estado = nuevo.estado
-
-      form.ubicacion = nuevo.ubicacion
-
-    if (nuevo.disco) {
-
-      const partes = nuevo.disco.split(' ')
-
-      capacidadDisco.value = partes[0]
-
-      unidadDisco.value = partes[1]
-
-      tipoDisco.value = partes[2]
-
-  }
-
-    }
-
-    else {
-
-      form.tipo = 'PC'
-
-      form.marca = ''
-
-      form.modelo = ''
-
-      form.numero_serie = ''
-
-      form.procesador = ''
-
-      form.memoria_ram = ''
-
-      form.disco = ''
-
-      form.sistema_operativo = ''
-
-      form.direccion_ip = ''
-
-      form.direccion_mac = ''
-
-      form.usuario_asignado = ''
-
-      form.estado = ''
-
-      form.ubicacion = ''
-
-      capacidadDisco.value = ''
-
-      unidadDisco.value = 'GB'
-
-      tipoDisco.value = 'SSD'
-
-    }
-
-  },
-
-  {
-
-    immediate: true
-
-  }
-
-)
+const tipoDisco = ref('SSD')
 
 const marcas = ref([])
 
@@ -390,22 +291,114 @@ const estados = ref([])
 
 const ubicaciones = ref([])
 
-const capacidadDisco = ref('')
 
-const unidadDisco = ref('GB')
+watch(
 
-const tipoDisco = ref('SSD')
+    () => props.equipo,
+
+    (nuevo) => {
+
+        if (nuevo) {
+
+            form.tipo = nuevo.tipo
+
+            form.marca = nuevo.marca
+
+            form.modelo = nuevo.modelo
+
+            form.numero_serie = nuevo.numero_serie
+
+            form.procesador = nuevo.procesador
+
+            form.memoria_ram = nuevo.memoria_ram
+                ? nuevo.memoria_ram.replace(' GB', '')
+                : ''
+
+            form.disco = nuevo.disco
+
+            form.sistema_operativo = nuevo.sistema_operativo
+
+            form.direccion_ip = nuevo.direccion_ip
+
+            form.direccion_mac = nuevo.direccion_mac
+
+            form.usuario_asignado = nuevo.usuario_asignado
+
+            form.estado = nuevo.estado
+
+            form.ubicacion = nuevo.ubicacion
+
+            if (nuevo.disco) {
+
+                const partes = nuevo.disco.split(' ')
+
+                capacidadDisco.value = partes[0] || ''
+
+                unidadDisco.value = partes[1] || 'GB'
+
+                tipoDisco.value = partes[2] || 'SSD'
+
+            }
+
+        } else {
+
+            form.tipo = 'PC'
+
+            form.marca = ''
+
+            form.modelo = ''
+
+            form.numero_serie = ''
+
+            form.procesador = ''
+
+            form.memoria_ram = ''
+
+            form.disco = ''
+
+            form.sistema_operativo = ''
+
+            form.direccion_ip = ''
+
+            form.direccion_mac = ''
+
+            form.usuario_asignado = ''
+
+            form.estado = ''
+
+            form.ubicacion = ''
+
+            capacidadDisco.value = ''
+
+            unidadDisco.value = 'GB'
+
+            tipoDisco.value = 'SSD'
+
+        }
+
+    },
+
+    {
+
+        immediate: true
+
+    }
+
+)
 
 const submitForm = () => {
 
     emit('save', {
 
-        ...form
+        ...form,
+
+        memoria_ram: `${form.memoria_ram} GB`,
+
+        disco: `${capacidadDisco.value} ${unidadDisco.value} ${tipoDisco.value}`
 
     })
 
 }
-
 
 onMounted(async () => {
 
@@ -426,17 +419,9 @@ onMounted(async () => {
         const respuestaUbicaciones = await getUbicaciones()
         ubicaciones.value = respuestaUbicaciones.results ?? respuestaUbicaciones
 
-        console.log("Usuarios:", usuarios.value)
-        console.log("Marcas:", marcas.value)
-        console.log("Sistemas:", sistemas.value)
-        console.log("Estados:", estados.value)
-        console.log("Ubicaciones:", ubicaciones.value)
+    } catch (error) {
 
-    }
-
-    catch (error) {
-
-        console.error("Error cargando catálogos:", error)
+        console.error('Error cargando catálogos:', error)
 
     }
 
@@ -446,17 +431,17 @@ onMounted(async () => {
 
 <style scoped>
 
-.user-form{
+.equipo-form{
 
-    display:flex;
+    display:grid;
 
-    flex-direction:column;
+    grid-template-columns:1fr 1fr;
 
     gap:20px;
 
 }
 
-.row{
+.field{
 
     display:flex;
 
@@ -466,31 +451,43 @@ onMounted(async () => {
 
 label{
 
-    font-weight:bold;
+    font-weight:600;
 
     margin-bottom:6px;
 
-}
-
-select{
-
-    padding:10px;
-
-    border-radius:6px;
-
-    border:1px solid #ccc;
-
-    font-size:15px;
+    color:#333;
 
 }
 
-.buttons{
+input,
+select,
+textarea{
 
-    display:flex;
+    width:100%;
 
-    justify-content:flex-end;
+    padding:10px 12px;
 
-    margin-top:10px;
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    box-sizing:border-box;
+
+    transition:.2s;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+
+    border-color:#1976d2;
+
+    box-shadow:0 0 0 3px rgba(25,118,210,.15);
 
 }
 
@@ -508,12 +505,6 @@ select{
 
     flex:1;
 
-    padding:10px;
-
-    border:1px solid #ccc;
-
-    border-radius:6px;
-
 }
 
 .inline-field span{
@@ -522,7 +513,10 @@ select{
 
     color:#555;
 
+    min-width:30px;
+
 }
+
 .disk-container{
 
     display:flex;
@@ -537,21 +531,49 @@ select{
 
     flex:1;
 
-    padding:10px;
-
-    border:1px solid #ccc;
-
-    border-radius:6px;
-
 }
 
 .disk-container select{
 
-    padding:10px;
+    width:90px;
 
-    border:1px solid #ccc;
+}
 
-    border-radius:6px;
+.buttons{
+
+    grid-column:1 / 3;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:10px;
+
+}
+
+
+.full-width{
+
+    grid-column:1 / 3;
+
+}
+
+
+@media(max-width:900px){
+
+    .equipo-form{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .buttons{
+
+        grid-column:1;
+
+    }
 
 }
 
